@@ -1,7 +1,9 @@
 ﻿using Homework_11.Infrastructure.Commands;
+using Homework_11.Models;
 using Homework_11.ViewModels.Base;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +15,20 @@ namespace Homework_11.ViewModels
     internal class MainWindowViewModel : ViewModel
     {
         #region Fields and properties
+
+        #region ClientsData
+        private RepositoryOfClients _clientsData;
+
+        /// <summary>
+        /// База данных работников
+        /// </summary>
+        public RepositoryOfClients ClientsData
+        {
+            get => _clientsData;
+            set => Set(ref _clientsData, value);
+        }
+
+        #endregion
 
         #region SelectedWorker
         private string _selectedWorker = "Консультант";
@@ -111,6 +127,8 @@ namespace Homework_11.ViewModels
             GoToAuthorizationPageCommand = new LambdaCommand(OnGoToAuthorizationPageCommandExecuted, CanGoToAuthorizationPageCommandExecute);
 
             #endregion
+
+            _clientsData = new RepositoryOfClients("clients.json");
         }
     }
 }

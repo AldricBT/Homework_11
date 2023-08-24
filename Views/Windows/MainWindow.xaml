@@ -56,9 +56,22 @@
                     </StackPanel>
                     
                 </UniformGrid>
-                
-                <DataGrid>
-                    
+
+                <DataGrid AutoGenerateColumns="False"
+                          ItemsSource="{Binding Path=ClientsData}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="id"/>
+                        <DataGridTextColumn Header="Фамилия" Binding="{Binding Lastname}"
+                                            MinWidth="100" />
+                        <DataGridTextColumn Header="Имя" Binding="{Binding Name}"
+                                            MinWidth="100"/>
+                        <DataGridTextColumn Header="Отчество" Binding="{Binding Patronymic}"
+                                            MinWidth="100"/>
+                        <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"
+                                            MinWidth="80"/>
+                        <DataGridTextColumn Header="Паспорт" Binding="{Binding Passport}"
+                                            MinWidth="80"/>
+                    </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>
             

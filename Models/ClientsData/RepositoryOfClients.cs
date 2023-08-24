@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -10,7 +11,7 @@ using System.Windows.Shapes;
 
 namespace Homework_11.Models
 {
-    internal class RepositoryOfClients
+    internal class RepositoryOfClients : IEnumerable
     {
         #region Поля
         private ObservableCollection<Client> _clients;
@@ -94,6 +95,13 @@ namespace Homework_11.Models
             string jsonString = JsonSerializer.Serialize(_clients);
             File.WriteAllText(_pathToClientsData, jsonString);
         }
+
+        /// <summary>
+        /// Реализация интерфейса IEnumerable для перечисления коллекции
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator GetEnumerator() => Clients.GetEnumerator();
+        
 
 
         ///// <summary>
