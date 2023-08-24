@@ -6,7 +6,7 @@
         xmlns:vm="clr-namespace:Homework_11.ViewModels"
         xmlns:local="clr-namespace:Homework_11"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="{Binding Path=Title}" Height="450" Width="800">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>

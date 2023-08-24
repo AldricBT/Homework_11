@@ -9,6 +9,13 @@ namespace Homework_11.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
+        private string _title = "Заголовок";
+
+        public string Title
+        {
+            get => _title;
+            set => Set(ref _title, value);
+        }
 
 
         /// <summary>
