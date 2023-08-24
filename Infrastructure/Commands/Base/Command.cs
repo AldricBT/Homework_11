@@ -21,7 +21,7 @@ namespace Homework_11.Infrastructure.Commands.Base
         /// <summary>
         /// Проверяет можно ли выполнить команду, если нет то ложь
         /// </summary>
-        /// <param name="parameter"></param>
+        /// <param _name="parameter"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         public abstract bool CanExecute(object? parameter);

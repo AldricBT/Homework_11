@@ -16,7 +16,7 @@ namespace Homework_11.ViewModels.Base
         /// Вызов события. Если явно не указывается название свойства, 
         /// то используется имя свойства, в котором происходит вызов
         /// </summary>
-        /// <param name="propertyName"></param>
+        /// <param _name="propertyName"></param>
         protected virtual void OnPropertyChanged([CallerMemberName] string? PropertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
@@ -25,10 +25,10 @@ namespace Homework_11.ViewModels.Base
         /// <summary>
         /// Метод для сеттера свойств
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="field">Поле во VM</param>
-        /// <param name="value">Значение, записываемое в поле</param>
-        /// <param name="PropertyName">Название обновляемого свойства 
+        /// <typeparam _name="T"></typeparam>
+        /// <param _name="field">Поле во VM</param>
+        /// <param _name="value">Значение, записываемое в поле</param>
+        /// <param _name="PropertyName">Название обновляемого свойства 
         /// (если вызывается в самом свойстве, то можно не указывать)</param>
         /// <returns>Вызывает событие для изменения интерфейса</returns>
         protected virtual bool Set<T>(ref T field, T value, [CallerMemberName] string? PropertyName = null)
