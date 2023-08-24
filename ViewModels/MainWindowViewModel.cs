@@ -29,7 +29,7 @@ namespace Homework_11.ViewModels
         #endregion
 
         #region SelectedPageIndex
-        private int _selectedPageIndex = 0;
+        private int _selectedPageIndex = 1;
 
         /// <summary>
         /// Индекс выбранной вкладки

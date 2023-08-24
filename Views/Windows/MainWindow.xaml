@@ -36,18 +36,27 @@
         
         <TabItem Header="Окно работы с данными" Visibility="Collapsed">
             <DockPanel>
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Right">
-                    <TextBlock Text="Сменить пользователя" VerticalAlignment="Center" />
-                    <Button HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"
-                            Command="{Binding Path=GoToAuthorizationPageCommand}" 
-                             Height="30" Width="30">
-                        <Button.Content>
-                            <fa:ImageAwesome Icon="Solid_ArrowCircleRight" Height="30"/>
-                        </Button.Content>
-                    </Button>
-
+                <UniformGrid DockPanel.Dock="Top" Columns="2" Rows="1">
                     
-                </StackPanel>
+                    <StackPanel HorizontalAlignment="Left" Grid.Column="0">
+                        <TextBlock Text="Вы авторизованы как:" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Path=SelectedWorker}" VerticalAlignment="Center"
+                                   FontStyle="Oblique" FontWeight="Bold"/>
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
+                        <TextBlock Text="Сменить пользователя" VerticalAlignment="Center" />
+                        <Button HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"
+                            Command="{Binding Path=GoToAuthorizationPageCommand}" 
+                            Height="30" Width="30">
+                            <Button.Content>
+                                <fa:ImageAwesome Icon="Solid_ArrowCircleRight" Height="30"/>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                    
+                </UniformGrid>
+                
                 <DataGrid>
                     
                 </DataGrid>
