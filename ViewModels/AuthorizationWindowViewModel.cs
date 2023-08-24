@@ -82,6 +82,7 @@ namespace Homework_11.ViewModels
         {
             #region Commands
             AuthorizationCommand = new LambdaCommand(OnAuthorizationCommandExecuted, CanAuthorizationCommandExecute);
+
             #endregion
         }
     }

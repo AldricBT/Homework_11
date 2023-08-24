@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Homework_11.ViewModels
@@ -13,11 +14,11 @@ namespace Homework_11.ViewModels
     {
         private string _title = "Заголовок";
 
-        public string Title
-        {
-            get => _title;
-            set => Set(ref _title, value);
-        }
+        //public string Title
+        //{
+        //    //get => ;
+        //    //set => Set(ref _title, value);
+        //}
 
         #region AddCommand
 
