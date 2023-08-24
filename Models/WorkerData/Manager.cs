@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Homework_11.Data.WorkerData
+namespace Homework_11.Models.WorkerData
 {
     internal class Manager : IWorker
     {

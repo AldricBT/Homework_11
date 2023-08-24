@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Shapes;
 
-namespace Homework_11.Data.ClientsData
+namespace Homework_11.Models
 {
     internal class RepositoryOfClients
     {

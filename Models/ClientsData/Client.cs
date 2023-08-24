@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Homework_11.Data
+namespace Homework_11.Models
 {
     /// <summary>
     /// Класс клиента для хранения его данных

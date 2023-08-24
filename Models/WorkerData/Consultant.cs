@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Shapes;
 
-namespace Homework_11.Data.WorkerData
+namespace Homework_11.Models.WorkerData
 {
     internal class Consultant : IWorker
     {
