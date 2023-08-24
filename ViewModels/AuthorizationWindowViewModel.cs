@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Homework_11.ViewModels
@@ -24,7 +26,7 @@ namespace Homework_11.ViewModels
         #region Fields and properties
 
         #region SelectedWorker
-        private string _selectedWorker;
+        private string _selectedWorker = "Консультант";
 
         /// <summary>
         /// Выбранный работник. В виде текста textblock
@@ -55,6 +57,22 @@ namespace Homework_11.ViewModels
 
         #endregion
 
+        #region AuthorizationCommand
+
+        public ICommand AuthorizationCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
+
+        private void OnAuthorizationCommandExecuted(object p) //логика команды
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            Application.Current.MainWindow.Owner = mainWindow;
+            Application.Current.MainWindow.Hide();
+        }
+
+        private bool CanAuthorizationCommandExecute(object p) => true; //если команда должна быть доступна всегда, то просто возвращаем true
+
+        #endregion
+
         #endregion
 
         /// <summary>
@@ -63,7 +81,7 @@ namespace Homework_11.ViewModels
         public AuthorizationWindowViewModel()
         {
             #region Commands
-            //AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
+            AuthorizationCommand = new LambdaCommand(OnAuthorizationCommandExecuted, CanAuthorizationCommandExecute);
             #endregion
         }
     }

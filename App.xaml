@@ -2,7 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Homework_11"
-             StartupUri="Views/Windows/AuthorizationWindow.xaml">
+             StartupUri="Views/Windows/AuthorizationWindow.xaml"
+             ShutdownMode="OnLastWindowClose">
+    
     <Application.Resources>
          
     </Application.Resources>

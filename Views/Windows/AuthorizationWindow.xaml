@@ -23,6 +23,7 @@
             <TextBlock Text="Менеджер"/>
         </ComboBox>
         <Button Content="Авторизироваться" Width="150" Height="30" Margin="10"
-                HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Command="{Binding Path=AuthorizationCommand}"/>
     </StackPanel>
 </Window>
