@@ -12,6 +12,8 @@
     </Window.DataContext>
     
     <Grid>
+        <Button Content="Button" HorizontalAlignment="Left" 
+                Command="{Binding Path=AddCommand}" Margin="276,69,0,0" VerticalAlignment="Top" Height="46" Width="100"/>
 
     </Grid>
 </Window>
