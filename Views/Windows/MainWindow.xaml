@@ -4,16 +4,57 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Homework_11.ViewModels"
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:local="clr-namespace:Homework_11"
         mc:Ignorable="d"
-        Title="{Binding Path=Title}" Height="450" Width="800">
+        Title="{Binding Path=MainWindowTitle}" 
+        Height="450" Width="800" MinHeight="200" MinWidth="400">    
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
-    
-    <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" 
-                Command="{Binding Path=AddCommand}" Margin="276,69,0,0" VerticalAlignment="Top" Height="46" Width="100"/>
 
-    </Grid>
+    <!--Программа разбита на две вкладки, чтобы не использовать два окна-->
+    <TabControl SelectedIndex="{Binding Path=SelectedPageIndex}">
+        
+        <TabItem Header="Авторизация" Visibility="Collapsed">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Выберете пользователя:" HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" Margin="10"/>
+                <ComboBox x:Name="СhooseWorker" HorizontalAlignment="Center" Margin="5" 
+                  VerticalAlignment="Center" HorizontalContentAlignment="Left" 
+                  Width="150" Height="30"  VerticalContentAlignment="Center"
+                  SelectedIndex="0" SelectedValuePath="Text"
+                  SelectedValue="{Binding Path=SelectedWorker}">
+                    <TextBlock Text="Консультант"/>
+                    <TextBlock Text="Менеджер"/>
+                </ComboBox>
+                <Button Content="Авторизироваться" Width="150" Height="30" Margin="10"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Command="{Binding Path=AuthorizationCommand}"/>
+            </StackPanel>
+        </TabItem>
+        
+        <TabItem Header="Окно работы с данными" Visibility="Collapsed">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Right">
+                    <TextBlock Text="Сменить пользователя" VerticalAlignment="Center" />
+                    <Button HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"
+                            Command="{Binding Path=GoToAuthorizationPageCommand}" 
+                             Height="30" Width="30">
+                        <Button.Content>
+                            <fa:ImageAwesome Icon="Solid_ArrowCircleRight" Height="30"/>
+                        </Button.Content>
+                    </Button>
+
+                    
+                </StackPanel>
+                <DataGrid>
+                    
+                </DataGrid>
+            </DockPanel>
+            
+        </TabItem>
+        
+    </TabControl>
+    
 </Window>
