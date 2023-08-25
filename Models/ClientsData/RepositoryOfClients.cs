@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Homework_11.Models.ClientsData;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,13 +12,14 @@ using System.Windows.Shapes;
 
 namespace Homework_11.Models
 {
-    internal class RepositoryOfClients : IEnumerable, ICloneable
+    internal class RepositoryOfClients : PublicRepositoryOfClients, ICloneable
     {
         #region Поля
         private ObservableCollection<Client> _clients;
         private readonly string _pathToClientsData;
 
         #endregion
+
 
         /// <summary>
         /// Конструктор. В случае отсутствия базы данных создает случайную
@@ -38,20 +40,6 @@ namespace Homework_11.Models
             }
 
         }
-
-        public RepositoryOfClients()
-        {            
-            _clients = new ObservableCollection<Client>();
-        }
-
-        #region Properties
-        public ObservableCollection<Client> Clients
-        {
-            get { return _clients; }
-        }
-
-        #endregion
-
 
         #region Private methods
         /// <summary>
@@ -84,15 +72,6 @@ namespace Homework_11.Models
 
         #region Public methods
         /// <summary>
-        /// Добавление клиента в базу (в памяти)
-        /// </summary>
-        /// <param name="client">экземпляр клиента</param>
-        public void Add(Client client)
-        {
-            _clients.Add(client);
-        }
-
-        /// <summary>
         /// Сохранение базы из памяти в файл
         /// </summary>
         public void Save()
@@ -100,12 +79,6 @@ namespace Homework_11.Models
             string jsonString = JsonSerializer.Serialize(_clients);
             File.WriteAllText(_pathToClientsData, jsonString);
         }
-
-        /// <summary>
-        /// Реализация интерфейса IEnumerable для перечисления коллекции
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator GetEnumerator() => Clients.GetEnumerator();
 
         /// <summary>
         /// Реализация интерфейса ICloneable для клонирования коллекции

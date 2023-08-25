@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Homework_11.Models.ClientsData;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -12,34 +13,27 @@ namespace Homework_11.Models.WorkerData
 {
     internal class Consultant : IWorker
     {
-
-        
-        //private RepositoryOfClients _repositoryOfClients;
-        //private readonly RepositoryOfClients _repositoryOfClientsView;
-
         private readonly RepositoryOfClients _repositoryOfClients;
-        public readonly RepositoryOfClients PublicClients = new RepositoryOfClients();
+        private readonly PublicRepositoryOfClients _publicClients;
         private readonly string _pathToClientsData;
 
-        //public Consultant(RepositoryOfClients? clients)
-        //{
-        //    if (clients == null) throw new ArgumentNullException();
-        //    for (int i = 1; i < clients!.Clients.Count; i++)
-        //    {
-        //        _repositoryOfClients.Add(GetClient(clients.Clients[i]));
-        //    }            
-        //}
+        
         public Consultant(string pathToClientsData)
         {
             _pathToClientsData = pathToClientsData;
-            RepositoryOfClients _repositoryOfClients = new RepositoryOfClients(_pathToClientsData);
-            for (int i = 1; i < _repositoryOfClients.Clients.Count; i++)
-            {
-                PublicClients!.Add(GetClient(_repositoryOfClients.Clients[i]));
-                
-            }
+            _repositoryOfClients = new RepositoryOfClients(_pathToClientsData);
+            
         }
         
+
+        /// <summary>
+        /// Свойство для чтения выходных данных
+        /// </summary>
+        public RepositoryOfClients PublicClients
+        {
+            get => _publicClients;
+        }
+
 
         /// <summary>
         /// Свойство для чтения базы данных клиентов

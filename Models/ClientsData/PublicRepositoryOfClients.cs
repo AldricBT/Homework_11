@@ -9,23 +9,31 @@ using System.Threading.Tasks;
 
 namespace Homework_11.Models.ClientsData
 {
-    internal class ReadOnlyRepositoryOfClients : IEnumerable
+    internal class PublicRepositoryOfClients : IEnumerable
     {
 
-        #region Поля
-        private ReadOnlyObservableCollection<Client> _clients;
         
-        #endregion
-        
-        /// <summary>
-        /// Конструктор. В случае отсутствия базы данных создает случайную
-        /// </summary>
-        /// <param name="path"></param>
-        public ReadOnlyRepositoryOfClients(RepositoryOfClients clients)
-        {            
-            _clients = new ReadOnlyObservableCollection<Client>(clients.Clients);
+        private ObservableCollection<Client> _clients;
+
+        public ObservableCollection<Client> Clients
+        {
+            get { return _clients; }
         }
-        
+
+        public PublicRepositoryOfClients()
+        {            
+            _clients = new ObservableCollection<Client>();
+        }
+
+        /// <summary>
+        /// Добавление клиента в базу (в памяти)
+        /// </summary>
+        /// <param name="client">экземпляр клиента</param>
+        public void Add(Client client)
+        {
+            _clients.Add(client);
+        }
+
         /// <summary>
         /// Реализация интерфейса IEnumerable для перечисления коллекции
         /// </summary>
