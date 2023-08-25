@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 
 namespace Homework_11.Models.WorkerData
 {
-    internal class Consultant : IWorker
+    internal class Consultant
     {
         private readonly RepositoryOfClients _repositoryOfClients;
         private readonly PublicRepositoryOfClients _publicClients;
@@ -22,26 +22,22 @@ namespace Homework_11.Models.WorkerData
         {
             _pathToClientsData = pathToClientsData;
             _repositoryOfClients = new RepositoryOfClients(_pathToClientsData);
-            
+            _publicClients = new PublicRepositoryOfClients();
+            for (int i = 0;  i < _repositoryOfClients.Clients.Count; i++)
+            {
+                _publicClients.Add(GetClient(_repositoryOfClients.Clients[i]));
+            }
         }
         
 
         /// <summary>
         /// Свойство для чтения выходных данных
         /// </summary>
-        public RepositoryOfClients PublicClients
+        public PublicRepositoryOfClients PublicClients
         {
             get => _publicClients;
         }
 
-
-        /// <summary>
-        /// Свойство для чтения базы данных клиентов
-        /// </summary>
-        public RepositoryOfClients RepositoryOfClients
-        {
-            get => _repositoryOfClients; 
-        }
 
         #region Client Get methods (private)
         /// <summary>
@@ -92,11 +88,7 @@ namespace Homework_11.Models.WorkerData
         #endregion
 
         #region Client Set methods
-
-
-
-        #endregion
-        public string Phone
+        public string SetPhone(Client client, )
         {
             get { return _client.Phone; }
             set
@@ -107,7 +99,11 @@ namespace Homework_11.Models.WorkerData
         }
 
 
-       
+        #endregion
+
+
+
+
 
         //public DateTime EditTime
         //{

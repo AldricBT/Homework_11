@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Homework_11.Models.WorkerData
 {
-    internal class Manager : IWorker
+    internal class Manager
     {
 
         private ObservableCollection<Client> _clients;

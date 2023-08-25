@@ -11,16 +11,22 @@ namespace Homework_11.Models
     /// </summary>
     internal class Client
     {
+        private int _nextId = 0;
+        private int _id;
         private string _lastname;
         private string _name;
         private string _patronymic;
-        //private string _phone;
-        //private string _passport;
+        private string _phone;
+        private string _passport;
         //private DateTime _editTime;
         //private string _editData;
         //private string _editType;    //добавил или изменил
         //private string _editWho;
 
+        public int ID
+        {
+            get => _id;
+        }
         public string Lastname
         {
             get { return _lastname; }
@@ -39,17 +45,17 @@ namespace Homework_11.Models
             set { _patronymic = value; }
         }
 
-        //public string Phone
-        //{
-        //    get { return _phone; }
-        //    set { _phone = value; }
-        //}
+        public string Phone
+        {
+            get { return _phone; }
+            set { _phone = value; }
+        }
 
-        //public string Passport
-        //{
-        //    get { return _passport; }
-        //    set { _passport = value; }
-        //}
+        public string Passport
+        {
+            get { return _passport; }
+            set { _passport = value; }
+        }
 
         //public DateTime EditTime
         //{
@@ -77,11 +83,13 @@ namespace Homework_11.Models
 
         public Client(string lastname, string name, string patronymic, string phone, string passport)
         {
+            _id = _nextId;
             _lastname = lastname;
             _name = name;
             _patronymic = patronymic;
-            //_phone = phone;
-            //_passport = passport;
+            _phone = phone;
+            _passport = passport;
+            _nextId++;
             //_editTime = DateTime.Now;
             //_editWho = "Мененджер";
             //_editType = "Добавление";
@@ -90,12 +98,14 @@ namespace Homework_11.Models
 
         public Client()
         {
+            _id = _nextId;
             Random rnd = new Random();
             _lastname = "Фамилия_" + rnd.Next(0, 100).ToString();
             _name = "Имя_" + rnd.Next(0, 100).ToString();
             _patronymic = "Отчество_" + rnd.Next(0, 100).ToString(); ;
-            //_phone = Math.Round((rnd.NextDouble() + 1) * 1e+10).ToString();
-            //_passport = Math.Round((rnd.NextDouble() + 1) * 1e+9).ToString();
+            _phone = Math.Round((rnd.NextDouble() + 1) * 1e+10).ToString();
+            _passport = Math.Round((rnd.NextDouble() + 1) * 1e+9).ToString();
+            _nextId++;
             //_editTime = DateTime.Now;
             //_editWho = "Мененджер";
             //_editType = "Добавление";
