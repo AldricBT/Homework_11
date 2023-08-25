@@ -20,6 +20,11 @@ namespace Homework_11.Models
 
         #endregion
 
+        //public new ObservableCollection<Client> Clients
+        //{
+        //    get => _clients;
+        //    set => _clients = value;
+        //}
 
         /// <summary>
         /// Конструктор. В случае отсутствия базы данных создает случайную

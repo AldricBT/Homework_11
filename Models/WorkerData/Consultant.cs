@@ -88,14 +88,16 @@ namespace Homework_11.Models.WorkerData
         #endregion
 
         #region Client Set methods
-        public string SetPhone(Client client, )
-        {
-            get { return _client.Phone; }
-            set
+        public bool SetPhone(Client client, string newPhone)
+        {   
+            int index = _repositoryOfClients.Clients.IndexOf(client);
+            if ((!string.IsNullOrEmpty(newPhone)) &&
+                (Math.Floor(Math.Log10(Int64.Parse(newPhone)) + 1) == 11))
             {
-                if ((!string.IsNullOrEmpty(value)) && (Math.Floor(Math.Log10(Int64.Parse(value)) + 1) == 11))
-                    _client.Phone = value;
+                _repositoryOfClients.Clients[index].Phone = newPhone;
+                return true;
             }
+            return false;
         }
 
 

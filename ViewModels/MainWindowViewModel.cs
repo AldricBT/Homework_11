@@ -1,5 +1,7 @@
 ﻿using Homework_11.Infrastructure.Commands;
 using Homework_11.Models;
+using Homework_11.Models.ClientsData;
+using Homework_11.Models.WorkerData;
 using Homework_11.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -12,17 +14,20 @@ using System.Windows.Input;
 
 namespace Homework_11.ViewModels
 {
+    
     internal class MainWindowViewModel : ViewModel
     {
+        const string pathToDataBase = "clients.json";
+
         #region Fields and properties
 
         #region ClientsData
-        private RepositoryOfClients _clientsData;
+        private PublicRepositoryOfClients _clientsData;
 
         /// <summary>
         /// База данных работников
         /// </summary>
-        public RepositoryOfClients ClientsData
+        public PublicRepositoryOfClients ClientsData
         {
             get => _clientsData;
             set => Set(ref _clientsData, value);
@@ -45,7 +50,7 @@ namespace Homework_11.ViewModels
         #endregion
 
         #region SelectedPageIndex
-        private int _selectedPageIndex = 1;
+        private int _selectedPageIndex = 0;
 
         /// <summary>
         /// Индекс выбранной вкладки
@@ -82,6 +87,12 @@ namespace Homework_11.ViewModels
         {
             SelectedPageIndex = 1;
             MainWindowTitle = "База клиентов";
+            if (_selectedWorker == "Консультант")
+            {
+                Consultant worker = new Consultant(pathToDataBase);
+                _clientsData = worker.PublicClients;
+            }
+             
         }
 
         private bool CanAuthorizationCommandExecute(object p) => _selectedPageIndex >= 0; //если команда должна быть доступна всегда, то просто возвращаем true
@@ -128,7 +139,7 @@ namespace Homework_11.ViewModels
 
             #endregion
 
-            _clientsData = new RepositoryOfClients("clients.json");
+            _clientsData = new PublicRepositoryOfClients();
         }
     }
 }
