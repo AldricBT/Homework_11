@@ -89,7 +89,7 @@ namespace Homework_11.ViewModels
             MainWindowTitle = "База клиентов";
             if (_selectedWorker == "Консультант")
             {
-                Consultant worker = new Consultant(pathToDataBase);
+                Worker worker = new Consultant(pathToDataBase);
                 ClientsData = worker.PublicClients;
             }
              

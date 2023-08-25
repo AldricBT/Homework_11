@@ -11,77 +11,25 @@ using System.Windows.Shapes;
 
 namespace Homework_11.Models.WorkerData
 {
-    internal class Consultant
+    internal class Consultant : Worker
     {
-        private ObservableCollection<Client> _clients;
         private ObservableCollection<Client> _publicClients;
-        private string _pathToClientsData;
 
-        public ObservableCollection<Client> PublicClients
+        public Consultant(string pathToClientsData) :
+            base(pathToClientsData)
+        {
+            _publicClients = new ObservableCollection<Client>();
+            for (int i = 0; i < base.Clients.Count; i++)
+            {
+                _publicClients.Add(GetClient(base.Clients[i]));
+            }
+        }
+
+        public override ObservableCollection<Client> PublicClients
         {
             get => _publicClients;
         }
 
-        public Consultant(string pathToClientsData) 
-        {
-            _pathToClientsData = pathToClientsData;
-            _clients = new ObservableCollection<Client>();
-            _publicClients = new ObservableCollection<Client>();
-            if (File.Exists(_pathToClientsData))
-            {
-                Load();
-            }
-            else
-            {
-                CreateRandomDB(10);
-                Save();
-            }
-
-            for (int i = 0; i < _clients.Count; i++)
-            {
-                _publicClients.Add(GetClient(_clients[i]));
-            }
-        }
-
-        #region Private methods
-        /// <summary>
-        /// Создание базы случайных клиентов
-        /// </summary>
-        /// <param name="size">Количество клиентов в базе</param>
-        private void CreateRandomDB(int size)
-        {
-            Client client;
-            for (int i = 0; i < size; i++)
-            {
-                client = new Client();
-                _clients.Add(client);
-            }
-        }
-
-
-
-        /// <summary>
-        /// Загрузка базы из файла в память
-        /// </summary>
-        private void Load()
-        {
-            string jsonString = File.ReadAllText(_pathToClientsData);
-            if (_clients != null)
-                _clients = JsonSerializer.Deserialize<ObservableCollection<Client>>(jsonString)!;
-        }
-        #endregion
-
-
-        #region Public methods
-        /// <summary>
-        /// Сохранение базы из памяти в файл
-        /// </summary>
-        public void Save()
-        {
-            string jsonString = JsonSerializer.Serialize(_clients);
-            File.WriteAllText(_pathToClientsData, jsonString);
-        }
-        #endregion
 
 
         #region Client Get methods (private)
@@ -90,7 +38,7 @@ namespace Homework_11.Models.WorkerData
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
-        private Client GetClient(Client client)
+        private new Client GetClient(Client client)
         {
             return new Client(
                 GetLastname(client),
@@ -100,32 +48,7 @@ namespace Homework_11.Models.WorkerData
                 GetPassport(client));
         }
 
-        //private int GetId(Client client)
-        //{
-        //    return client.ID;
-        //}
-
-        private string GetLastname(Client client)
-        {
-            return client.Lastname;
-        }
-
-        private string GetName(Client client)
-        {
-            return client.Name;
-        }
-
-        private string GetPatronymic(Client client)
-        {
-            return client.Patronymic;
-        }
-
-        private string GetPhone(Client client)
-        {
-            return client.Phone;
-        }
-
-        private string GetPassport(Client client)
+        private new string GetPassport(Client client)
         {
             string stars = "";
             for (int i = 0; i < client.Passport.Length; i++)
