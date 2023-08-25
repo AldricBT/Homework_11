@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 
 namespace Homework_11.Models
 {
-    internal class RepositoryOfClients : IEnumerable
+    internal class RepositoryOfClients : IEnumerable, ICloneable
     {
         #region Поля
         private ObservableCollection<Client> _clients;
@@ -37,6 +37,11 @@ namespace Homework_11.Models
                 Save();
             }
 
+        }
+
+        public RepositoryOfClients()
+        {            
+            _clients = new ObservableCollection<Client>();
         }
 
         #region Properties
@@ -101,7 +106,16 @@ namespace Homework_11.Models
         /// </summary>
         /// <returns></returns>
         public IEnumerator GetEnumerator() => Clients.GetEnumerator();
-        
+
+        /// <summary>
+        /// Реализация интерфейса ICloneable для клонирования коллекции
+        /// </summary>
+        /// <returns></returns>
+        public object Clone()
+        {
+            return new RepositoryOfClients(_pathToClientsData);
+        }
+
 
 
         ///// <summary>
