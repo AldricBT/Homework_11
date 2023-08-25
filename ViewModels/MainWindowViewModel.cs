@@ -22,12 +22,12 @@ namespace Homework_11.ViewModels
         #region Fields and properties
 
         #region ClientsData
-        private PublicRepositoryOfClients _clientsData;
+        private ObservableCollection<Client> _clientsData;
 
         /// <summary>
         /// База данных работников
         /// </summary>
-        public PublicRepositoryOfClients ClientsData
+        public ObservableCollection<Client> ClientsData
         {
             get => _clientsData;
             set => Set(ref _clientsData, value);
@@ -90,7 +90,7 @@ namespace Homework_11.ViewModels
             if (_selectedWorker == "Консультант")
             {
                 Consultant worker = new Consultant(pathToDataBase);
-                _clientsData = worker.PublicClients;
+                ClientsData = worker.PublicClients;
             }
              
         }
@@ -139,7 +139,7 @@ namespace Homework_11.ViewModels
 
             #endregion
 
-            _clientsData = new PublicRepositoryOfClients();
+            _clientsData = new ObservableCollection<Client>();
         }
     }
 }

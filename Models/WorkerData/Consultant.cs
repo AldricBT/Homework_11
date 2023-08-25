@@ -13,30 +13,75 @@ namespace Homework_11.Models.WorkerData
 {
     internal class Consultant
     {
-        private readonly RepositoryOfClients _repositoryOfClients;
-        private readonly PublicRepositoryOfClients _publicClients;
-        private readonly string _pathToClientsData;
+        private ObservableCollection<Client> _clients;
+        private ObservableCollection<Client> _publicClients;
+        private string _pathToClientsData;
 
-        
-        public Consultant(string pathToClientsData)
-        {
-            _pathToClientsData = pathToClientsData;
-            _repositoryOfClients = new RepositoryOfClients(_pathToClientsData);
-            _publicClients = new PublicRepositoryOfClients();
-            for (int i = 0;  i < _repositoryOfClients.Clients.Count; i++)
-            {
-                _publicClients.Add(GetClient(_repositoryOfClients.Clients[i]));
-            }
-        }
-        
-
-        /// <summary>
-        /// Свойство для чтения выходных данных
-        /// </summary>
-        public PublicRepositoryOfClients PublicClients
+        public ObservableCollection<Client> PublicClients
         {
             get => _publicClients;
         }
+
+        public Consultant(string pathToClientsData) 
+        {
+            _pathToClientsData = pathToClientsData;
+            _clients = new ObservableCollection<Client>();
+            _publicClients = new ObservableCollection<Client>();
+            if (File.Exists(_pathToClientsData))
+            {
+                Load();
+            }
+            else
+            {
+                CreateRandomDB(10);
+                Save();
+            }
+
+            for (int i = 0; i < _clients.Count; i++)
+            {
+                _publicClients.Add(GetClient(_clients[i]));
+            }
+        }
+
+        #region Private methods
+        /// <summary>
+        /// Создание базы случайных клиентов
+        /// </summary>
+        /// <param name="size">Количество клиентов в базе</param>
+        private void CreateRandomDB(int size)
+        {
+            Client client;
+            for (int i = 0; i < size; i++)
+            {
+                client = new Client();
+                _clients.Add(client);
+            }
+        }
+
+
+
+        /// <summary>
+        /// Загрузка базы из файла в память
+        /// </summary>
+        private void Load()
+        {
+            string jsonString = File.ReadAllText(_pathToClientsData);
+            if (_clients != null)
+                _clients = JsonSerializer.Deserialize<ObservableCollection<Client>>(jsonString)!;
+        }
+        #endregion
+
+
+        #region Public methods
+        /// <summary>
+        /// Сохранение базы из памяти в файл
+        /// </summary>
+        public void Save()
+        {
+            string jsonString = JsonSerializer.Serialize(_clients);
+            File.WriteAllText(_pathToClientsData, jsonString);
+        }
+        #endregion
 
 
         #region Client Get methods (private)
@@ -55,7 +100,11 @@ namespace Homework_11.Models.WorkerData
                 GetPassport(client));
         }
 
-        
+        //private int GetId(Client client)
+        //{
+        //    return client.ID;
+        //}
+
         private string GetLastname(Client client)
         {
             return client.Lastname;
@@ -88,17 +137,17 @@ namespace Homework_11.Models.WorkerData
         #endregion
 
         #region Client Set methods
-        public bool SetPhone(Client client, string newPhone)
-        {   
-            int index = _repositoryOfClients.Clients.IndexOf(client);
-            if ((!string.IsNullOrEmpty(newPhone)) &&
-                (Math.Floor(Math.Log10(Int64.Parse(newPhone)) + 1) == 11))
-            {
-                _repositoryOfClients.Clients[index].Phone = newPhone;
-                return true;
-            }
-            return false;
-        }
+        //public bool SetPhone(Client client, string newPhone)
+        //{   
+        //    int index = _repositoryOfClients.Clients.IndexOf(client);
+        //    if ((!string.IsNullOrEmpty(newPhone)) &&
+        //        (Math.Floor(Math.Log10(Int64.Parse(newPhone)) + 1) == 11))
+        //    {
+        //        _repositoryOfClients.Clients[index].Phone = newPhone;
+        //        return true;
+        //    }
+        //    return false;
+        //}
 
 
         #endregion
