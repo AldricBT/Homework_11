@@ -1,7 +1,10 @@
-﻿using Homework_11.Infrastructure.Commands;
+﻿using Homework_11.Data;
+using Homework_11.Infrastructure.Commands;
+using Homework_11.Models;
 using Homework_11.ViewModels.Base;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +15,9 @@ namespace Homework_11.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
+        private Worker _worker;
+        private string _pathToClientData = "clients.json";
+
         #region Fields and properties
 
         #region SelectedWorker
@@ -56,6 +62,24 @@ namespace Homework_11.ViewModels
 
         #endregion
 
+        #region PublicData
+        private ObservableCollection<Client> _clients;
+        public ObservableCollection<Client> Clients
+        {
+            get => _clients;
+            set => Set(ref _clients, value);
+        }
+        #endregion
+
+        #region SelectedItem
+        private Client _selectedItem;
+        public Client SelectedItem
+        {
+            get => _selectedItem;
+            set => Set(ref _selectedItem, value);
+        }
+        #endregion
+
         #endregion
 
 
@@ -69,6 +93,19 @@ namespace Homework_11.ViewModels
         {
             SelectedPageIndex = 1;
             MainWindowTitle = "База клиентов";
+            
+            switch (_selectedWorker)
+            {
+                case "Консультант":
+                    _worker = new Consultant(_pathToClientData);
+                    break;
+
+                case "Менеджер":
+                    _worker = new Manager(_pathToClientData);
+                    break;
+            }
+            _clients = _worker.PublicClients;
+            OnPropertyChanged("Clients");
         }
 
         private bool CanAuthorizationCommandExecute(object p) => _selectedPageIndex >= 0; //если команда должна быть доступна всегда, то просто возвращаем true
@@ -102,6 +139,20 @@ namespace Homework_11.ViewModels
 
         #endregion
 
+        #region SaveChangesCommand. Сохранение изменений клиента в базе. Происходит во время изменений в DataGrid
+
+        public ICommand SaveChangesCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
+
+        private void OnSaveChangesCommandExecuted(object p) //логика команды
+        {
+            Worker.Edit(_selectedItem.Id, _clients.Where(c => c.Id == _selectedItem.Id).First());
+            Worker.Save();
+        }
+
+        private bool CanSaveChangesCommandExecute(object p) => true; //если команда должна быть доступна всегда, то просто возвращаем true
+
+        #endregion
+
         #endregion
 
         /// <summary>
@@ -114,6 +165,7 @@ namespace Homework_11.ViewModels
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
             AuthorizationCommand = new LambdaCommand(OnAuthorizationCommandExecuted, CanAuthorizationCommandExecute);
             GoToAuthorizationPageCommand = new LambdaCommand(OnGoToAuthorizationPageCommandExecuted, CanGoToAuthorizationPageCommandExecute);
+            SaveChangesCommand = new LambdaCommand(OnSaveChangesCommandExecuted, CanSaveChangesCommandExecute);
 
             #endregion
         }

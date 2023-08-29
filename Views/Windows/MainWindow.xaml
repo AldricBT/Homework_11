@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Homework_11.ViewModels"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
-        xmlns:local="clr-namespace:Homework_11"
+        xmlns:local="clr-namespace:Homework_11" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="{Binding Path=MainWindowTitle}" 
         Height="450" Width="800" MinHeight="200" MinWidth="400">    
@@ -53,10 +53,28 @@
                         </Button>
                     </StackPanel>
                 </UniformGrid>
-                
-                <DataGrid>
-                    
+
+                <DataGrid ItemsSource="{Binding Path=Clients}" Width="600" HorizontalAlignment="Left" Margin="20"
+                          AutoGenerateColumns="False" CanUserAddRows="True" SelectionMode="Single"
+                          SelectedItem="{Binding Path=SelectedItem}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Path=Id}" IsReadOnly="True" Width="Auto"/>
+                        <DataGridTextColumn Header="Фамилия" Binding="{Binding Path=Lastname, UpdateSourceTrigger=PropertyChanged}" 
+                            IsReadOnly="False" Width="Auto"/>
+                        <DataGridTextColumn Header="Имя" Binding="{Binding Path=Name}" IsReadOnly="True" Width="Auto"/>
+                        <DataGridTextColumn Header="Отчество" Binding="{Binding Path=Patronymic}" IsReadOnly="True" Width="Auto"/>
+                        <DataGridTextColumn Header="Телефон" Binding="{Binding Path=Phone}" IsReadOnly="True" Width="Auto"/>
+                        <DataGridTextColumn Header="Паспорт" Binding="{Binding Path=Passport}" IsReadOnly="True" Width="Auto"/>
+                    </DataGrid.Columns>
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="CellEditEnding">
+                            <i:InvokeCommandAction Command="{Binding SaveChangesCommand}"/>
+                        </i:EventTrigger>
+
+                    </i:Interaction.Triggers>
                 </DataGrid>
+                
             </DockPanel>
             
         </TabItem>
