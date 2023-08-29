@@ -15,12 +15,15 @@ namespace Homework_11.Models
         private static string _pathToClientsData;
 
         private static ObservableCollection<Client> _clients;
+        
+        public abstract ObservableCollection<Client> PublicClients { get; }
 
         public static ObservableCollection<Client> Clients
         {
             get => _clients;
-            //set => _clients = value;
         }
+
+        protected abstract ObservableCollection<Client> GetPublicData();
 
         /// <summary>
         /// Добавление клиента в базу
