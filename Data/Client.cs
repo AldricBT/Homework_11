@@ -11,6 +11,7 @@ namespace Homework_11.Data
     /// </summary>
     internal class Client
     {
+        private int _id;
         private string _lastname;
         private string _name;
         private string _patronymic;
@@ -21,6 +22,10 @@ namespace Homework_11.Data
         private string _editType;    //добавил или изменил
         private string _editWho;
 
+        public int Id
+        {
+            get => _id;
+        }
         public string Lastname
         {
             get { return _lastname; }
@@ -75,8 +80,9 @@ namespace Homework_11.Data
             set { _editWho = value; }
         }
 
-        public Client(string lastname, string name, string patronymic, string phone, string passport)
+        public Client(int id, string lastname, string name, string patronymic, string phone, string passport)
         {
+            _id = id;
             _lastname = lastname;
             _name = name;
             _patronymic = patronymic;
@@ -88,18 +94,18 @@ namespace Homework_11.Data
             _editData = "Новый клиент";
         }
 
-        public Client()
-        {
-            Random rnd = new Random();
-            _lastname = "Фамилия_" + rnd.Next(0, 100).ToString();
-            _name = "Имя_" + rnd.Next(0, 100).ToString();
-            _patronymic = "Отчество_" + rnd.Next(0, 100).ToString(); ;
-            _phone = Math.Round((rnd.NextDouble() + 1) * 1e+10).ToString();
-            _passport = Math.Round((rnd.NextDouble() + 1) * 1e+9).ToString();
-            _editTime = DateTime.Now;
-            _editWho = "Мененджер";
-            _editType = "Добавление";
-            _editData = "Новый клиент";
-        }       
+        //public Client()
+        //{
+        //    Random rnd = new Random();
+        //    _lastname = "Фамилия_" + rnd.Next(0, 100).ToString();
+        //    _name = "Имя_" + rnd.Next(0, 100).ToString();
+        //    _patronymic = "Отчество_" + rnd.Next(0, 100).ToString(); ;
+        //    _phone = Math.Round((rnd.NextDouble() + 1) * 1e+10).ToString();
+        //    _passport = Math.Round((rnd.NextDouble() + 1) * 1e+9).ToString();
+        //    _editTime = DateTime.Now;
+        //    _editWho = "Мененджер";
+        //    _editType = "Добавление";
+        //    _editData = "Новый клиент";
+        //}
     }
 }
