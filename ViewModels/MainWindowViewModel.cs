@@ -58,6 +58,9 @@ namespace Homework_11.ViewModels
 
         #endregion
 
+
+        #region Commands
+
         #region AuthorizationCommand
 
         public ICommand AuthorizationCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
@@ -99,12 +102,14 @@ namespace Homework_11.ViewModels
 
         #endregion
 
+        #endregion
 
         /// <summary>
         /// Конструктор класса (описываются команды)
         /// </summary>
         public MainWindowViewModel()
         {
+
             #region Commands
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
             AuthorizationCommand = new LambdaCommand(OnAuthorizationCommandExecuted, CanAuthorizationCommandExecute);
