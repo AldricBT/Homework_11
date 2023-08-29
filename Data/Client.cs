@@ -9,7 +9,9 @@ namespace Homework_11.Data
     /// <summary>
     /// Класс клиента для хранения его данных
     /// </summary>
-    internal class Client
+    /// 
+    // По идее должен реализовывать ViewModel! или INotifyPropertyChanged
+    internal class Client : ICloneable
     {
         private int _id;
         private string _lastname;
@@ -92,6 +94,27 @@ namespace Homework_11.Data
             _editWho = "Мененджер";
             _editType = "Добавление";
             _editData = "Новый клиент";
+        }
+
+        private Client(int id, string lastname, string name, string patronymic, string phone, string passport, 
+            DateTime editTime, string editWho, string editType, string editData)
+        {
+            _id = id;
+            _lastname = lastname;
+            _name = name;
+            _patronymic = patronymic;
+            _phone = phone;
+            _passport = passport;
+            _editTime = editTime;
+            _editWho = editWho;
+            _editType = editType;
+            _editData = editData;
+        }
+
+        public object Clone()
+        {
+            return new Client(_id, _lastname, _name, _patronymic, _phone, _passport, 
+                _editTime, _editWho, _editType, _editData);
         }
 
         //public Client()
