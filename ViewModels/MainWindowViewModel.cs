@@ -1,4 +1,5 @@
-﻿using Homework_11.Infrastructure.Commands;
+﻿using Homework_11.Data;
+using Homework_11.Infrastructure.Commands;
 using Homework_11.Models;
 using Homework_11.ViewModels.Base;
 using System;
@@ -14,21 +15,10 @@ namespace Homework_11.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
+        private Worker _worker;
+        private string _pathToClientData = "clients.json";
+
         #region Fields and properties
-
-        #region ClientsData
-        private RepositoryOfClients _clientsData;
-
-        /// <summary>
-        /// База данных работников
-        /// </summary>
-        public RepositoryOfClients ClientsData
-        {
-            get => _clientsData;
-            set => Set(ref _clientsData, value);
-        }
-
-        #endregion
 
         #region SelectedWorker
         private string _selectedWorker = "Консультант";
@@ -45,7 +35,7 @@ namespace Homework_11.ViewModels
         #endregion
 
         #region SelectedPageIndex
-        private int _selectedPageIndex = 1;
+        private int _selectedPageIndex = 0;
 
         /// <summary>
         /// Индекс выбранной вкладки
@@ -72,16 +62,96 @@ namespace Homework_11.ViewModels
 
         #endregion
 
+        #region PublicData
+        private ObservableCollection<Client> _clients;
+        public ObservableCollection<Client> Clients
+        {
+            get => _clients;
+            set => Set(ref _clients, value);
+        }
         #endregion
 
+        #region SelectedItem
+        private Client _selectedItem;
+        public Client SelectedItem
+        {
+            get => _selectedItem;
+            set => Set(ref _selectedItem, value);
+        }
+        #endregion
+
+       #region Свойства для доступа к изменению столбцов DataGrid
+
+       #region IsFIOReadOnly. ФИО
+       private bool _isFIOReadOnly;
+       public bool IsFIOReadOnly
+       {
+           get => _isFIOReadOnly;
+           set => Set(ref _isFIOReadOnly, value);
+       }
+        #endregion
+
+        #region IsPhoneReadOnly. Телефон
+        private bool _isPhoneReadOnly;
+        public bool IsPhoneReadOnly
+        {
+            get => _isPhoneReadOnly;
+            set => Set(ref _isPhoneReadOnly, value);
+        }
+        #endregion
+
+        #region IsPassportReadOnly. Паспорт
+        private bool _isPassportReadOnly;
+        public bool IsPassportReadOnly
+        {
+            get => _isPassportReadOnly;
+            set => Set(ref _isPassportReadOnly, value);
+        }
+        #endregion
+
+        #endregion
+
+        #endregion
+
+
+        #region Commands
+
         #region AuthorizationCommand
+        //Выполняется при авторизации: происходит отображение публичных данных в зависимости от выбранного воркера
 
         public ICommand AuthorizationCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
 
         private void OnAuthorizationCommandExecuted(object p) //логика команды
         {
+            //Смена "страницы"
             SelectedPageIndex = 1;
             MainWindowTitle = "База клиентов";
+            
+            //подгрузка публичных данных в зависимости от работника
+            switch (_selectedWorker)
+            {
+                case "Консультант":
+                    _worker = new Consultant(_pathToClientData);
+                    _isFIOReadOnly = true;
+                    OnPropertyChanged("IsFIOReadOnly");
+                    _isPhoneReadOnly = false;
+                    OnPropertyChanged("IsPhoneReadOnly");
+                    _isPassportReadOnly = true;
+                    OnPropertyChanged(nameof(IsPassportReadOnly));
+                    break;
+
+                case "Менеджер":
+                    _worker = new Manager(_pathToClientData);
+                    _isFIOReadOnly = false;
+                    OnPropertyChanged(nameof(IsFIOReadOnly));
+                    _isPhoneReadOnly = false;
+                    OnPropertyChanged(nameof(IsPhoneReadOnly));
+                    _isPassportReadOnly = false;
+                    OnPropertyChanged(nameof(IsPassportReadOnly));
+                    break;
+            }
+            _clients = _worker.PublicClients;
+            OnPropertyChanged("Clients");
         }
 
         private bool CanAuthorizationCommandExecute(object p) => _selectedPageIndex >= 0; //если команда должна быть доступна всегда, то просто возвращаем true
@@ -115,20 +185,38 @@ namespace Homework_11.ViewModels
 
         #endregion
 
+        #region SaveChangesCommand. Сохранение изменений клиента в базе. Происходит во время изменений в DataGrid
+
+        public ICommand SaveChangesCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
+
+        private void OnSaveChangesCommandExecuted(object p) //логика команды
+        {
+            Worker.Edit(_selectedItem.Id, _clients.Where(c => c.Id == _selectedItem.Id).First());
+            Worker.Save();
+        }
+
+        private bool CanSaveChangesCommandExecute(object p) => true; //если команда должна быть доступна всегда, то просто возвращаем true
+
+        #endregion
+
+        #endregion
 
         /// <summary>
         /// Конструктор класса (описываются команды)
         /// </summary>
         public MainWindowViewModel()
         {
+            _isFIOReadOnly = false;
+            _isPhoneReadOnly = false;
+            _isPassportReadOnly = false;
+            
             #region Commands
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
             AuthorizationCommand = new LambdaCommand(OnAuthorizationCommandExecuted, CanAuthorizationCommandExecute);
             GoToAuthorizationPageCommand = new LambdaCommand(OnGoToAuthorizationPageCommandExecuted, CanGoToAuthorizationPageCommandExecute);
+            SaveChangesCommand = new LambdaCommand(OnSaveChangesCommandExecuted, CanSaveChangesCommandExecute);
 
             #endregion
-
-            _clientsData = new RepositoryOfClients("clients.json");
         }
     }
 }
