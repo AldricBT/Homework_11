@@ -80,28 +80,74 @@ namespace Homework_11.ViewModels
         }
         #endregion
 
+       #region Свойства для доступа к изменению столбцов DataGrid
+
+       #region IsFIOReadOnly. ФИО
+       private bool _isFIOReadOnly;
+       public bool IsFIOReadOnly
+       {
+           get => _isFIOReadOnly;
+           set => Set(ref _isFIOReadOnly, value);
+       }
+        #endregion
+
+        #region IsPhoneReadOnly. Телефон
+        private bool _isPhoneReadOnly;
+        public bool IsPhoneReadOnly
+        {
+            get => _isPhoneReadOnly;
+            set => Set(ref _isPhoneReadOnly, value);
+        }
+        #endregion
+
+        #region IsPassportReadOnly. Паспорт
+        private bool _isPassportReadOnly;
+        public bool IsPassportReadOnly
+        {
+            get => _isPassportReadOnly;
+            set => Set(ref _isPassportReadOnly, value);
+        }
+        #endregion
+
+        #endregion
+
         #endregion
 
 
         #region Commands
 
         #region AuthorizationCommand
+        //Выполняется при авторизации: происходит отображение публичных данных в зависимости от выбранного воркера
 
         public ICommand AuthorizationCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
 
         private void OnAuthorizationCommandExecuted(object p) //логика команды
         {
+            //Смена "страницы"
             SelectedPageIndex = 1;
             MainWindowTitle = "База клиентов";
             
+            //подгрузка публичных данных в зависимости от работника
             switch (_selectedWorker)
             {
                 case "Консультант":
                     _worker = new Consultant(_pathToClientData);
+                    _isFIOReadOnly = true;
+                    OnPropertyChanged("IsFIOReadOnly");
+                    _isPhoneReadOnly = false;
+                    OnPropertyChanged("IsPhoneReadOnly");
+                    _isPassportReadOnly = true;
+                    OnPropertyChanged(nameof(IsPassportReadOnly));
                     break;
 
                 case "Менеджер":
                     _worker = new Manager(_pathToClientData);
+                    _isFIOReadOnly = false;
+                    OnPropertyChanged(nameof(IsFIOReadOnly));
+                    _isPhoneReadOnly = false;
+                    OnPropertyChanged(nameof(IsPhoneReadOnly));
+                    _isPassportReadOnly = false;
+                    OnPropertyChanged(nameof(IsPassportReadOnly));
                     break;
             }
             _clients = _worker.PublicClients;
@@ -160,7 +206,10 @@ namespace Homework_11.ViewModels
         /// </summary>
         public MainWindowViewModel()
         {
-
+            _isFIOReadOnly = false;
+            _isPhoneReadOnly = false;
+            _isPassportReadOnly = false;
+            
             #region Commands
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
             AuthorizationCommand = new LambdaCommand(OnAuthorizationCommandExecuted, CanAuthorizationCommandExecute);

@@ -5,14 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Homework_11.ViewModels"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
-        xmlns:local="clr-namespace:Homework_11" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:local="clr-namespace:Homework_11" 
+        xmlns:is="clr-namespace:Homework_11.Infrastructure.Convertors" 
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="{Binding Path=MainWindowTitle}" 
-        Height="450" Width="800" MinHeight="200" MinWidth="400">    
+        Height="450" Width="1000" MinHeight="200" MinWidth="400">    
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
-
+    <Window.Resources>
+        <is:BindingProxy x:Key="proxy" Data="{Binding}" />
+    </Window.Resources>
+    
+    
     <!--Программа разбита на две вкладки, чтобы не использовать два окна-->
     <TabControl SelectedIndex="{Binding Path=SelectedPageIndex}">
         
@@ -33,8 +39,8 @@
                 Command="{Binding Path=AuthorizationCommand}"/>
             </StackPanel>
         </TabItem>
-        
-        <TabItem Header="Окно работы с данными" Visibility="Collapsed">
+
+        <TabItem Header="Окно работы с данными" Visibility="Collapsed">            
             <DockPanel>
                 <UniformGrid DockPanel.Dock="Top" Columns="2" Rows="1">
                     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
@@ -54,17 +60,29 @@
                     </StackPanel>
                 </UniformGrid>
 
-                <DataGrid ItemsSource="{Binding Path=Clients}" Width="600" HorizontalAlignment="Left" Margin="20"
+                <DataGrid ItemsSource="{Binding Path=Clients}" Width="800" HorizontalAlignment="Left" Margin="20"
                           AutoGenerateColumns="False" CanUserAddRows="True" SelectionMode="Single"
                           SelectedItem="{Binding Path=SelectedItem}">
+                    <DataGrid.Resources>
+                        <is:BindingProxy x:Key="proxy" Data="{Binding}" />
+                    </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Binding="{Binding Path=Id}" IsReadOnly="True" Width="Auto"/>
                         <DataGridTextColumn Header="Фамилия" Binding="{Binding Path=Lastname, UpdateSourceTrigger=PropertyChanged}" 
-                            IsReadOnly="False" Width="Auto"/>
-                        <DataGridTextColumn Header="Имя" Binding="{Binding Path=Name}" IsReadOnly="True" Width="Auto"/>
-                        <DataGridTextColumn Header="Отчество" Binding="{Binding Path=Patronymic}" IsReadOnly="True" Width="Auto"/>
-                        <DataGridTextColumn Header="Телефон" Binding="{Binding Path=Phone}" IsReadOnly="True" Width="Auto"/>
-                        <DataGridTextColumn Header="Паспорт" Binding="{Binding Path=Passport}" IsReadOnly="True" Width="Auto"/>
+                                            IsReadOnly="{Binding Data.IsFIOReadOnly, Source={StaticResource proxy}}" Width="Auto"/>
+                        <DataGridTextColumn Header="Имя" Binding="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" 
+                                            IsReadOnly="{Binding Data.IsFIOReadOnly, Source={StaticResource proxy}}" Width="Auto"/>
+                        <DataGridTextColumn Header="Отчество" Binding="{Binding Path=Patronymic, UpdateSourceTrigger=PropertyChanged}" 
+                                            IsReadOnly="{Binding Data.IsFIOReadOnly, Source={StaticResource proxy}}" Width="Auto"/>
+                        <DataGridTextColumn Header="Телефон" Binding="{Binding Path=Phone, UpdateSourceTrigger=PropertyChanged}" 
+                                            IsReadOnly="{Binding Data.IsPhoneReadOnly, Source={StaticResource proxy}}" Width="Auto"/>
+                        <DataGridTextColumn Header="Паспорт" Binding="{Binding Path=Passport, UpdateSourceTrigger=PropertyChanged}" 
+                                            IsReadOnly="{Binding Data.IsFIOReadOnly, Source={StaticResource proxy}}" Width="Auto"/>
+
+                        <!--<DataGridTextColumn Header="Время последнего изменения" Binding="{Binding Path=EditTime}" IsReadOnly="True" Width="Auto"/>-->
+                        <!--<DataGridTextColumn Header="Автор изменения" Binding="{Binding Path=EditWho}" IsReadOnly="True" Width="Auto"/>-->
+                        <!--<DataGridTextColumn Header="Тип изменения" Binding="{Binding Path=EditType}" IsReadOnly="True" Width="Auto"/>-->
+                        <!--<DataGridTextColumn Header="Изменение" Binding="{Binding Path=EditData}" IsReadOnly="True" Width="Auto"/>-->
                     </DataGrid.Columns>
 
                     <i:Interaction.Triggers>
