@@ -221,7 +221,7 @@ namespace Homework_11.ViewModels
         private void OnRememberClientCommandExecuted(object p) //логика команды
         {
             OnPropertyChanged(nameof(SelectedItem));
-            _rememberClient = (Client)_selectedItem.Clone();
+            _rememberClient = (Client)_selectedItem.Clone();            
         }
 
         private bool CanRememberClientCommandExecute(object p) => _selectedPageIndex >= 0; //если команда должна быть доступна всегда, то просто возвращаем true
