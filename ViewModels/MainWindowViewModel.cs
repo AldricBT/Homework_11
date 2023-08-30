@@ -1,6 +1,7 @@
 ﻿using Homework_11.Infrastructure.Commands;
 using Homework_11.Models;
 using Homework_11.ViewModels.Base;
+using Homework_11.Views.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,6 +16,7 @@ namespace Homework_11.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
+        private AddClientWindow _addClientWindow;
         private Worker _worker = default!;
         private readonly string _pathToClientData = "clients.json";
 
@@ -187,12 +189,15 @@ namespace Homework_11.ViewModels
 
         private void OnAddCommandExecuted(object p) //логика команды
         {
-            
+            _addClientWindow = new AddClientWindow();
+            _addClientWindow.Show();
         }
 
         private bool CanAddCommandExecute(object p)   //если команда должна быть доступна всегда, то просто возвращаем true
         {
-            if (_selectedWorker == "Консультант")
+            if ((_selectedWorker == "Консультант"))
+                return false;
+            if ((_addClientWindow != null) && (_addClientWindow.IsVisible))
                 return false;
             return true;
         }
