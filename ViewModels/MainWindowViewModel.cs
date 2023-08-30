@@ -272,7 +272,14 @@ namespace Homework_11.ViewModels
             OnAuthorizationCommandExecuted(null!);
         }
 
-        private bool CanAddCommandExecute(object p) => true;        
+        private bool CanAddCommandExecute(object p)
+        {
+            if ((string.IsNullOrEmpty(_lastname)) || (string.IsNullOrEmpty(_name)) ||
+                (string.IsNullOrEmpty(_patronymic)) || (string.IsNullOrEmpty(_phone)) ||
+                (string.IsNullOrEmpty(_passport)))
+                return false;
+            return true;
+        }       
         #endregion
 
         #region RemoveClientCommand
@@ -291,30 +298,7 @@ namespace Homework_11.ViewModels
             return true;
         }
         
-        #endregion
-
-
-        //#region GetSelectClientCommand
-        //public ICommand GetSelectClientCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
-
-        //private void OnGetSelectClientCommandExecuted(object p) //логика команды
-        //{
-        //    Worker.Clients.Add(new Client(
-        //        Worker.GetNextID(),
-        //        _lastname,
-        //        _name,
-        //        _patronymic,
-        //        _phone,
-        //        _passport));
-
-        //    //Worker.Remove(_);
-
-        //    Worker.Save();
-        //    OnAuthorizationCommandExecuted(null!);
-        //}
-
-        //private bool CanGetSelectClientCommandExecute(object p) => true;  //если команда должна быть доступна всегда, то просто возвращаем true
-        //#endregion
+        #endregion        
 
         #region SaveChangesCommand. Сохранение изменений клиента в базе. Происходит во время изменений в DataGrid
         public ICommand SaveChangesCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
@@ -356,7 +340,7 @@ namespace Homework_11.ViewModels
             RememberClientCommand = new LambdaCommand(OnRememberClientCommandExecuted, CanRememberClientCommandExecute);
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
             RemoveClientCommand = new LambdaCommand(OnRemoveClientCommandExecuted, CanRemoveClientCommandExecute);
-            //GetSelectClientCommand = new LambdaCommand(OnGetSelectClientCommandExecuted, CanGetSelectClientCommandExecute);
+            
 
             # endregion
         }
