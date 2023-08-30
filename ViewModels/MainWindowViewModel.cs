@@ -1,7 +1,6 @@
 ﻿using Homework_11.Infrastructure.Commands;
 using Homework_11.Models;
 using Homework_11.ViewModels.Base;
-using Homework_11.Views.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,7 +15,6 @@ namespace Homework_11.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
-        private AddClientWindow _addClientWindow;
         private Worker _worker = default!;
         private readonly string _pathToClientData = "clients.json";
 
@@ -122,9 +120,58 @@ namespace Homework_11.ViewModels
 
         #endregion
 
+        #region Add new client Properties
+
+        #region Lastname
+        private string _lastname = default!;
+        public string Lastname
+        {
+            get => _lastname;
+            set => Set(ref _lastname, value);
+        }
         #endregion
 
-        
+        #region Name
+        private string _name = default!;
+        public string Name
+        {
+            get => _name;
+            set => Set(ref _name, value);
+        }
+        #endregion
+
+        #region Patronymic
+        private string _patronymic = default!;
+        public string Patronymic
+        {
+            get => _patronymic;
+            set => Set(ref _patronymic, value);
+        }
+        #endregion
+
+        #region Phone
+        private string _phone = default!;
+        public string Phone
+        {
+            get => _phone;
+            set => Set(ref _phone, value);
+        }
+        #endregion
+
+        #region Passport
+        private string _passport = default!;
+        public string Passport
+        {
+            get => _passport;
+            set => Set(ref _passport, value);
+        }
+        #endregion
+
+        #endregion
+
+        #endregion
+
+
         #region Commands
 
         #region AuthorizationCommand
@@ -183,31 +230,46 @@ namespace Homework_11.ViewModels
 
         #endregion
 
-        #region AddCommand
+        #region GoToAddPage
 
+        public ICommand GoToAddPage { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
+
+        private void OnGoToAddPageExecuted(object p) //логика команды
+        {
+            SelectedPageIndex = 2;
+            MainWindowTitle = "Добавление работника";
+        }
+
+        private bool CanGoToAddPageExecute(object p) => true;   //если команда должна быть доступна всегда, то просто возвращаем true
+        #endregion
+
+        #region AddCommand
         public ICommand AddCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
 
         private void OnAddCommandExecuted(object p) //логика команды
-        {            
-            _addClientWindow = new AddClientWindow();
-            _addClientWindow.Show();
+        {
+            Worker.Clients.Add(new Client(
+                Worker.GetNextID(),
+                _lastname,
+                _name,
+                _patronymic,
+                _phone,
+                _passport));
+            Worker.Save();
+
+            Lastname = string.Empty;            
+            Name = string.Empty;
+            Patronymic = string.Empty;
+            Phone = string.Empty;
+            Passport = string.Empty;
+
+            OnAuthorizationCommandExecuted(null!);
         }
 
-        private bool CanAddCommandExecute(object p)   //если команда должна быть доступна всегда, то просто возвращаем true
-        {            
-            if ((_selectedWorker == "Консультант"))
-                return false;
-            if ((_addClientWindow != null) && (_addClientWindow.IsVisible))
-                return false;
-            OnPropertyChanged(nameof(Clients));
-            return true;
-        }
-        
-
+        private bool CanAddCommandExecute(object p) => true;  //если команда должна быть доступна всегда, то просто возвращаем true
         #endregion
 
         #region SaveChangesCommand. Сохранение изменений клиента в базе. Происходит во время изменений в DataGrid
-
         public ICommand SaveChangesCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
 
         private void OnSaveChangesCommandExecuted(object p) //логика команды
@@ -217,11 +279,9 @@ namespace Homework_11.ViewModels
         }
 
         private bool CanSaveChangesCommandExecute(object p) => true; //если команда должна быть доступна всегда, то просто возвращаем true
-
         #endregion
 
         #region RememberClientCommand. Запоминание клиента, который выбран для изменения
-
         public ICommand RememberClientCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
 
         private void OnRememberClientCommandExecuted(object p) //логика команды
@@ -231,7 +291,6 @@ namespace Homework_11.ViewModels
         }
 
         private bool CanRememberClientCommandExecute(object p) => _selectedPageIndex >= 0; //если команда должна быть доступна всегда, то просто возвращаем true
-
         #endregion 
 
         #endregion
@@ -240,15 +299,16 @@ namespace Homework_11.ViewModels
         /// Конструктор класса (описываются команды)
         /// </summary>
         public MainWindowViewModel()
-        {           
-            
+        {
+
             #region Commands
-            AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
+            GoToAddPage = new LambdaCommand(OnGoToAddPageExecuted, CanGoToAddPageExecute);
             AuthorizationCommand = new LambdaCommand(OnAuthorizationCommandExecuted, CanAuthorizationCommandExecute);
             GoToAuthorizationPageCommand = new LambdaCommand(OnGoToAuthorizationPageCommandExecuted, CanGoToAuthorizationPageCommandExecute);
             SaveChangesCommand = new LambdaCommand(OnSaveChangesCommandExecuted, CanSaveChangesCommandExecute);
             RememberClientCommand = new LambdaCommand(OnRememberClientCommandExecuted, CanRememberClientCommandExecute);
-            
+            AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
+
             #endregion
         }
     }
