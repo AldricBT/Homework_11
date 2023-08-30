@@ -126,7 +126,7 @@ namespace Homework_11.Models
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public bool Equals(Client other)
+        public bool Equals(Client? other)
         {
             if (other == null)
                 return false;
@@ -137,19 +137,7 @@ namespace Homework_11.Models
                 return true;
             else
                 return false;
-        }
-
-        public override bool Equals(Object obj)
-        {
-            if (obj == null)
-                return false;
-
-            Client personObj = obj as Client;
-            if (personObj == null)
-                return false;
-            else
-                return Equals(personObj);
-        }
+        }        
         #endregion
 
         #region Реализация INotifyPropertyChanged
