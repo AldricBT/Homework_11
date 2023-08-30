@@ -38,6 +38,11 @@ namespace Homework_11.Models
 
         protected abstract ObservableCollection<Client> GetPublicData();
 
+        public static int GetNextID()
+        {            
+            return Clients.Max(c => c.Id) + 1;         
+        }
+
         /// <summary>
         /// Добавление клиента в базу
         /// </summary>

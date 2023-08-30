@@ -132,7 +132,7 @@ namespace Homework_11.ViewModels
 
         public ICommand AuthorizationCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
 
-        private void OnAuthorizationCommandExecuted(object p) //логика команды
+        public void OnAuthorizationCommandExecuted(object p) //логика команды
         {
             //Смена "страницы"
             SelectedPageIndex = 1;
@@ -188,17 +188,18 @@ namespace Homework_11.ViewModels
         public ICommand AddCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
 
         private void OnAddCommandExecuted(object p) //логика команды
-        {
+        {            
             _addClientWindow = new AddClientWindow();
             _addClientWindow.Show();
         }
 
         private bool CanAddCommandExecute(object p)   //если команда должна быть доступна всегда, то просто возвращаем true
-        {
+        {            
             if ((_selectedWorker == "Консультант"))
                 return false;
             if ((_addClientWindow != null) && (_addClientWindow.IsVisible))
                 return false;
+            OnPropertyChanged(nameof(Clients));
             return true;
         }
         

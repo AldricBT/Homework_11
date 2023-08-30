@@ -2,6 +2,7 @@
 using Homework_11.Models;
 using Homework_11.ViewModels.Base;
 using Homework_11.Views.Windows;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,7 +69,16 @@ namespace Homework_11.ViewModels
         public ICommand AddCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
 
         private void OnAddCommandExecuted(object p) //логика команды
-        {
+        {            
+            
+            Worker.Clients.Add(new Client(
+                Worker.GetNextID(),
+                _lastname,
+                _name,
+                _patronymic,
+                _phone,
+                _passport));
+            //Worker.Save();
             
         }
 
