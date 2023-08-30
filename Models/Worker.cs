@@ -11,6 +11,20 @@ namespace Homework_11.Models
 {
     internal abstract class Worker
     {
+        protected enum EnumOfWorkers
+        {
+            Консультант,
+            Менеджер
+        }
+        protected enum EnumOfEditData
+        {
+            Фамилия = 1,
+            Имя,
+            Отчество,
+            Телефон,
+            Паспорт
+        }
+
         private static string _pathToClientsData = string.Empty;
 
         private static ObservableCollection<Client> _clients = default!;
@@ -51,6 +65,12 @@ namespace Homework_11.Models
         {
             _clients[_clients.IndexOf(_clients.Where(c => c.Id == clientId).First())] = editedClient;
         }
+        /// <summary>
+        /// Изменение данных клиента
+        /// </summary>
+        /// <param name="_changed">Отображаемый клиент после изменения</param>
+        /// /// <param name="_remember">Отображаемый клиент до изменения</param>
+        public abstract void ChangedClientData(Client _changed, Client _remember);
 
         private void CreateRandomDB(int num)
         {

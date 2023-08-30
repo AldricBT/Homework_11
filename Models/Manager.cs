@@ -28,6 +28,30 @@ namespace Homework_11.Models
             return clients;
         }
 
+        public override void ChangedClientData(Client _changed, Client _remember)
+        {
+            Edit(Clients.Where(c => c.Id == _changed.Id).First().Id, _changed);
+            string editData = string.Empty;
+
+            //поиск имени измененного свойства
+            for (int i = 0; i < _remember.GetType().GetProperties().Length; i++)
+            {
+                if (_remember.GetType().GetProperties()[i].GetValue(_remember!)!.ToString() !=
+                    _changed.GetType().GetProperties()[i].GetValue(_changed!)!.ToString())
+                {                   
+                    editData = ((EnumOfEditData)i).ToString();
+                    break;
+                }
+            }                        
+
+            Clients.Where(c => c.Id == _changed.Id).First().EditData = editData;
+            Clients.Where(c => c.Id == _changed.Id).First().EditTime = DateTime.Now;
+            Clients.Where(c => c.Id == _changed.Id).First().EditWho = EnumOfWorkers.Менеджер.ToString();
+            Clients.Where(c => c.Id == _changed.Id).First().EditType = "Изменение";
+
+            Save();
+        }
+
         public Manager(string pathToClientsData) : base(pathToClientsData)
         {
             _publicClients = GetPublicData();

@@ -200,27 +200,27 @@ namespace Homework_11.ViewModels
 
         private void OnSaveChangesCommandExecuted(object p) //логика команды
         {
-            //Worker.Edit(_selectedItem.Id, _clients.Where(c => c.Id == _selectedItem.Id).First());
-            Worker.Save();
+            if (!_selectedItem.Equals(_rememberClient))
+                _worker.ChangedClientData(_selectedItem, _rememberClient);
         }
 
         private bool CanSaveChangesCommandExecute(object p) => true; //если команда должна быть доступна всегда, то просто возвращаем true
 
         #endregion
 
-        #region RememberClientCommand
+        #region RememberClientCommand. Запоминание клиента, который выбран для изменения
 
         public ICommand RememberClientCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
 
         private void OnRememberClientCommandExecuted(object p) //логика команды
         {
             OnPropertyChanged(nameof(SelectedItem));
-            _rememberClient = _selectedItem;
+            _rememberClient = (Client)_selectedItem.Clone();
         }
 
         private bool CanRememberClientCommandExecute(object p) => _selectedPageIndex >= 0; //если команда должна быть доступна всегда, то просто возвращаем true
 
-        #endregion
+        #endregion 
 
         #endregion
 

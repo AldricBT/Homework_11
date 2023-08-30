@@ -31,6 +31,18 @@ namespace Homework_11.Models
             return clients;
         }
 
+        public override void ChangedClientData(Client _changed, Client _remember)
+        {
+            Clients.Where(c => c.Id == _changed.Id).First().Phone = _changed.Phone;
+
+            Clients.Where(c => c.Id == _changed.Id).First().EditData = EnumOfEditData.Телефон.ToString();
+            Clients.Where(c => c.Id == _changed.Id).First().EditTime = DateTime.Now;
+            Clients.Where(c => c.Id == _changed.Id).First().EditWho = EnumOfWorkers.Консультант.ToString();
+            Clients.Where(c => c.Id == _changed.Id).First().EditType = "Изменение";
+
+            Save();
+        }
+
         public Consultant(string pathToClientsData) : base(pathToClientsData)
         {
             _publicClients = GetPublicData();

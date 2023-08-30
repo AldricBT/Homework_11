@@ -13,7 +13,7 @@ namespace Homework_11.Models
     /// </summary>
     /// 
     // По идее должен реализовывать ViewModel! или INotifyPropertyChanged
-    internal class Client : ICloneable, INotifyPropertyChanged
+    internal class Client : ICloneable, INotifyPropertyChanged, IEquatable<Client>
     {
         private int _id;
         private string _lastname;
@@ -119,6 +119,38 @@ namespace Homework_11.Models
                 _editTime, _editWho, _editType, _editData);
         }
 
+
+        #region Реализация Equals
+        /// <summary>
+        /// Сравнение клиентов по ФИО, телефону и паспорту
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public bool Equals(Client other)
+        {
+            if (other == null)
+                return false;
+
+            if ((_name == other._name) && (_lastname == other._lastname) && 
+                (_patronymic == other._patronymic) && (_phone == other._phone) && 
+                (_passport == other._passport))
+                return true;
+            else
+                return false;
+        }
+
+        public override bool Equals(Object obj)
+        {
+            if (obj == null)
+                return false;
+
+            Client personObj = obj as Client;
+            if (personObj == null)
+                return false;
+            else
+                return Equals(personObj);
+        }
+        #endregion
 
         #region Реализация INotifyPropertyChanged
         public event PropertyChangedEventHandler? PropertyChanged;
