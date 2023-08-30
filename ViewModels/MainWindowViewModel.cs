@@ -14,8 +14,8 @@ namespace Homework_11.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
-        private Worker _worker;
-        private string _pathToClientData = "clients.json";
+        private Worker _worker = default!;
+        private readonly string _pathToClientData = "clients.json";
 
         #region Fields and properties
 
@@ -62,7 +62,7 @@ namespace Homework_11.ViewModels
         #endregion
 
         #region PublicData
-        private ObservableCollection<Client> _clients;
+        private ObservableCollection<Client> _clients = default!;
         public ObservableCollection<Client> Clients
         {
             get => _clients;
@@ -71,7 +71,7 @@ namespace Homework_11.ViewModels
         #endregion
 
         #region SelectedItem
-        private Client _selectedItem;
+        private Client _selectedItem = default!;
         public Client SelectedItem
         {
             get => _selectedItem;
@@ -82,7 +82,7 @@ namespace Homework_11.ViewModels
        #region Свойства для доступа к изменению столбцов DataGrid
 
        #region IsFIOReadOnly. ФИО
-       private bool _isFIOReadOnly;
+       private bool _isFIOReadOnly = true;
        public bool IsFIOReadOnly
        {
            get => _isFIOReadOnly;
@@ -91,7 +91,7 @@ namespace Homework_11.ViewModels
         #endregion
 
         #region IsPhoneReadOnly. Телефон
-        private bool _isPhoneReadOnly;
+        private bool _isPhoneReadOnly = true;
         public bool IsPhoneReadOnly
         {
             get => _isPhoneReadOnly;
@@ -100,7 +100,7 @@ namespace Homework_11.ViewModels
         #endregion
 
         #region IsPassportReadOnly. Паспорт
-        private bool _isPassportReadOnly;
+        private bool _isPassportReadOnly = true;
         public bool IsPassportReadOnly
         {
             get => _isPassportReadOnly;
@@ -204,10 +204,7 @@ namespace Homework_11.ViewModels
         /// Конструктор класса (описываются команды)
         /// </summary>
         public MainWindowViewModel()
-        {
-            _isFIOReadOnly = false;
-            _isPhoneReadOnly = false;
-            _isPassportReadOnly = false;
+        {           
             
             #region Commands
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
