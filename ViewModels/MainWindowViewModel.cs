@@ -17,6 +17,7 @@ namespace Homework_11.ViewModels
     {
         private Worker _worker = default!;
         private readonly string _pathToClientData = "clients.json";
+        
 
         #region Fields and properties
 
@@ -172,7 +173,7 @@ namespace Homework_11.ViewModels
         #endregion
 
 
-        #region Commands
+        #region Commands  
 
         #region AuthorizationCommand
         //Выполняется при авторизации: происходит отображение публичных данных в зависимости от выбранного воркера
@@ -240,7 +241,12 @@ namespace Homework_11.ViewModels
             MainWindowTitle = "Добавление работника";
         }
 
-        private bool CanGoToAddPageExecute(object p) => true;   //если команда должна быть доступна всегда, то просто возвращаем true
+        private bool CanGoToAddPageExecute(object p)
+        {
+            if (_selectedWorker == "Консультант")
+                return false;
+            return true;
+        }
         #endregion
 
         #region AddCommand
@@ -266,8 +272,49 @@ namespace Homework_11.ViewModels
             OnAuthorizationCommandExecuted(null!);
         }
 
-        private bool CanAddCommandExecute(object p) => true;  //если команда должна быть доступна всегда, то просто возвращаем true
+        private bool CanAddCommandExecute(object p) => true;        
         #endregion
+
+        #region RemoveClientCommand
+        public ICommand RemoveClientCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
+
+        private void OnRemoveClientCommandExecuted(object p) //логика команды
+        {  
+            Worker.Remove(_selectedItem.Id);
+            Worker.Save();
+            OnAuthorizationCommandExecuted(null!);
+        }
+        private bool CanRemoveClientCommandExecute(object p)
+        {
+            if (_selectedWorker == "Консультант")
+                return false;
+            return true;
+        }
+        
+        #endregion
+
+
+        //#region GetSelectClientCommand
+        //public ICommand GetSelectClientCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
+
+        //private void OnGetSelectClientCommandExecuted(object p) //логика команды
+        //{
+        //    Worker.Clients.Add(new Client(
+        //        Worker.GetNextID(),
+        //        _lastname,
+        //        _name,
+        //        _patronymic,
+        //        _phone,
+        //        _passport));
+
+        //    //Worker.Remove(_);
+
+        //    Worker.Save();
+        //    OnAuthorizationCommandExecuted(null!);
+        //}
+
+        //private bool CanGetSelectClientCommandExecute(object p) => true;  //если команда должна быть доступна всегда, то просто возвращаем true
+        //#endregion
 
         #region SaveChangesCommand. Сохранение изменений клиента в базе. Происходит во время изменений в DataGrid
         public ICommand SaveChangesCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
@@ -308,8 +355,10 @@ namespace Homework_11.ViewModels
             SaveChangesCommand = new LambdaCommand(OnSaveChangesCommandExecuted, CanSaveChangesCommandExecute);
             RememberClientCommand = new LambdaCommand(OnRememberClientCommandExecuted, CanRememberClientCommandExecute);
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
+            RemoveClientCommand = new LambdaCommand(OnRemoveClientCommandExecuted, CanRemoveClientCommandExecute);
+            //GetSelectClientCommand = new LambdaCommand(OnGetSelectClientCommandExecuted, CanGetSelectClientCommandExecute);
 
-            #endregion
+            # endregion
         }
     }
 }

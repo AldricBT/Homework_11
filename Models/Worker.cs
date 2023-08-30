@@ -56,7 +56,7 @@ namespace Homework_11.Models
         /// Удаление клиента по ID
         /// </summary>
         /// <param name="clientId"></param>
-        public void Remove(int clientId)
+        public static void Remove(int clientId)
         {
             _clients.Remove(_clients.Where(c => c.Id == clientId).First());
         }
