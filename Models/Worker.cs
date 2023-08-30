@@ -11,9 +11,9 @@ namespace Homework_11.Models
 {
     internal abstract class Worker
     {
-        private static string _pathToClientsData;
+        private static string _pathToClientsData = string.Empty;
 
-        private static ObservableCollection<Client> _clients;
+        private static ObservableCollection<Client> _clients = default!;
         
         public abstract ObservableCollection<Client> PublicClients { get; }
 
@@ -80,7 +80,7 @@ namespace Homework_11.Models
         {
             string jsonString = File.ReadAllText(_pathToClientsData);
             if (_clients != null)
-                _clients = JsonSerializer.Deserialize<ObservableCollection<Client>>(jsonString);
+                _clients = JsonSerializer.Deserialize<ObservableCollection<Client>>(jsonString)!;
         }
 
         public Worker(string pathToClientsData)
