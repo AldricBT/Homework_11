@@ -61,8 +61,8 @@
                 </UniformGrid>
 
                 <DataGrid ItemsSource="{Binding Path=Clients}" Width="800" HorizontalAlignment="Left" Margin="20"
-                          AutoGenerateColumns="False" CanUserAddRows="True" SelectionMode="Single"
-                          SelectedItem="{Binding Path=SelectedItem}">
+                          AutoGenerateColumns="False" CanUserAddRows="True"
+                          SelectedItem="{Binding Path=SelectedItem, UpdateSourceTrigger=PropertyChanged}" SelectionUnit="Cell">
                     <DataGrid.Resources>
                         <is:BindingProxy x:Key="proxy" Data="{Binding}" />
                     </DataGrid.Resources>
@@ -88,6 +88,10 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="CellEditEnding">
                             <i:InvokeCommandAction Command="{Binding SaveChangesCommand}"/>
+                        </i:EventTrigger>
+
+                        <i:EventTrigger EventName="BeginningEdit">
+                            <i:InvokeCommandAction Command="{Binding RememberClientCommand}"/>
                         </i:EventTrigger>
 
                     </i:Interaction.Triggers>

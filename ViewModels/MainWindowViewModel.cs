@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Homework_11.ViewModels
@@ -79,10 +80,19 @@ namespace Homework_11.ViewModels
         }
         #endregion
 
-       #region Свойства для доступа к изменению столбцов DataGrid
+        #region RememberClient. Неизмененные данные клиента. Сравнивая их с измененными сохранятся только измененные данные в основной БД
+        private Client _rememberClient = default!;
+        public Client RememberClient
+        {
+            get => _rememberClient;
+            set => Set(ref _rememberClient, value);
+        }
+        #endregion
 
-       #region IsFIOReadOnly. ФИО
-       private bool _isFIOReadOnly = true;
+        #region Свойства для доступа к изменению столбцов DataGrid
+
+        #region IsFIOReadOnly. ФИО
+        private bool _isFIOReadOnly = true;
        public bool IsFIOReadOnly
        {
            get => _isFIOReadOnly;
@@ -112,7 +122,7 @@ namespace Homework_11.ViewModels
 
         #endregion
 
-
+        
         #region Commands
 
         #region AuthorizationCommand
@@ -190,11 +200,25 @@ namespace Homework_11.ViewModels
 
         private void OnSaveChangesCommandExecuted(object p) //логика команды
         {
-            Worker.Edit(_selectedItem.Id, _clients.Where(c => c.Id == _selectedItem.Id).First());
+            //Worker.Edit(_selectedItem.Id, _clients.Where(c => c.Id == _selectedItem.Id).First());
             Worker.Save();
         }
 
         private bool CanSaveChangesCommandExecute(object p) => true; //если команда должна быть доступна всегда, то просто возвращаем true
+
+        #endregion
+
+        #region RememberClientCommand
+
+        public ICommand RememberClientCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
+
+        private void OnRememberClientCommandExecuted(object p) //логика команды
+        {
+            OnPropertyChanged(nameof(SelectedItem));
+            _rememberClient = _selectedItem;
+        }
+
+        private bool CanRememberClientCommandExecute(object p) => _selectedPageIndex >= 0; //если команда должна быть доступна всегда, то просто возвращаем true
 
         #endregion
 
@@ -211,7 +235,8 @@ namespace Homework_11.ViewModels
             AuthorizationCommand = new LambdaCommand(OnAuthorizationCommandExecuted, CanAuthorizationCommandExecute);
             GoToAuthorizationPageCommand = new LambdaCommand(OnGoToAuthorizationPageCommandExecuted, CanGoToAuthorizationPageCommandExecute);
             SaveChangesCommand = new LambdaCommand(OnSaveChangesCommandExecuted, CanSaveChangesCommandExecute);
-
+            RememberClientCommand = new LambdaCommand(OnRememberClientCommandExecuted, CanRememberClientCommandExecute);
+            
             #endregion
         }
     }

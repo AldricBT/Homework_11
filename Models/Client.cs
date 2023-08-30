@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,7 +13,7 @@ namespace Homework_11.Models
     /// </summary>
     /// 
     // По идее должен реализовывать ViewModel! или INotifyPropertyChanged
-    internal class Client : ICloneable
+    internal class Client : ICloneable, INotifyPropertyChanged
     {
         private int _id;
         private string _lastname;
@@ -30,56 +32,56 @@ namespace Homework_11.Models
         }
         public string Lastname
         {
-            get { return _lastname; }
-            set { _lastname = value; }
+            get => _lastname; 
+            set => Set(ref _lastname, value);
         }
 
         public string Name
         {
-            get { return _name; }
-            set { _name = value; }
+            get => _name;
+            set => Set(ref _name, value);
         }
 
         public string Patronymic
         {
-            get { return _patronymic; }
-            set { _patronymic = value; }
+            get => _patronymic;
+            set => Set(ref _patronymic, value);
         }
 
         public string Phone
         {
-            get { return _phone; }
-            set { _phone = value; }
+            get => _phone;
+            set => Set(ref _phone, value);
         }
 
         public string Passport
         {
-            get { return _passport; }
-            set { _passport = value; }
+            get => _passport;
+            set => Set(ref _passport, value);
         }
 
         public DateTime EditTime
         {
-            get { return _editTime; }
-            set { _editTime = value; }
+            get => _editTime;
+            set => Set(ref _editTime, value);
         }
 
         public string EditData
         {
-            get { return _editData; }
-            set { _editData = value; }
+            get => _editData;
+            set => Set(ref _editData, value);
         }
 
         public string EditType
         {
-            get { return _editType; }
-            set { _editType = value; }
+            get => _editType;
+            set => Set(ref _editType, value);
         }
 
         public string EditWho
         {
-            get { return _editWho; }
-            set { _editWho = value; }
+            get => _editWho;
+            set => Set(ref _editWho, value);
         }
 
         public Client(int id, string lastname, string name, string patronymic, string phone, string passport)
@@ -117,18 +119,37 @@ namespace Homework_11.Models
                 _editTime, _editWho, _editType, _editData);
         }
 
-        //public Client()
-        //{
-        //    Random rnd = new Random();
-        //    _lastname = "Фамилия_" + rnd.Next(0, 100).ToString();
-        //    _name = "Имя_" + rnd.Next(0, 100).ToString();
-        //    _patronymic = "Отчество_" + rnd.Next(0, 100).ToString(); ;
-        //    _phone = Math.Round((rnd.NextDouble() + 1) * 1e+10).ToString();
-        //    _passport = Math.Round((rnd.NextDouble() + 1) * 1e+9).ToString();
-        //    _editTime = DateTime.Now;
-        //    _editWho = "Мененджер";
-        //    _editType = "Добавление";
-        //    _editData = "Новый клиент";
-        //}
+
+        #region Реализация INotifyPropertyChanged
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        /// <summary>
+        /// Вызов события. Если явно не указывается название свойства, 
+        /// то используется имя свойства, в котором происходит вызов
+        /// </summary>
+        /// <param _name="propertyName"></param>
+        protected virtual void OnPropertyChanged([CallerMemberName] string? PropertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+        }
+
+        /// <summary>
+        /// Метод для сеттера свойств
+        /// </summary>
+        /// <typeparam _name="T"></typeparam>
+        /// <param _name="field">Поле во VM</param>
+        /// <param _name="value">Значение, записываемое в поле</param>
+        /// <param _name="PropertyName">Название обновляемого свойства 
+        /// (если вызывается в самом свойстве, то можно не указывать)</param>
+        /// <returns>Вызывает событие для изменения интерфейса</returns>
+        protected virtual bool Set<T>(ref T field, T value, [CallerMemberName] string? PropertyName = null)
+        {
+            if (Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(PropertyName);
+            return true;
+        }
+        #endregion
+
     }
 }
