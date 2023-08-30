@@ -190,7 +190,13 @@ namespace Homework_11.ViewModels
             
         }
 
-        private bool CanAddCommandExecute(object p) => true; //если команда должна быть доступна всегда, то просто возвращаем true
+        private bool CanAddCommandExecute(object p)   //если команда должна быть доступна всегда, то просто возвращаем true
+        {
+            if (_selectedWorker == "Консультант")
+                return false;
+            return true;
+        }
+        
 
         #endregion
 
