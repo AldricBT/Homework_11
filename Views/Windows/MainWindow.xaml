@@ -6,6 +6,7 @@
         xmlns:vm="clr-namespace:Homework_11.ViewModels"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:local="clr-namespace:Homework_11" 
+        xmlns:dt="clr-namespace:Homework_11.Infrastructure.Validation"
         xmlns:is="clr-namespace:Homework_11.Infrastructure.Convertors" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
@@ -14,7 +15,7 @@
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
-    <Window.Resources>
+    <Window.Resources>        
         <is:BindingProxy x:Key="proxy" Data="{Binding}" />
     </Window.Resources>
     
@@ -66,16 +67,16 @@
                               AutoGenerateColumns="False" CanUserAddRows="True" SelectionMode="Single"
                               SelectedItem="{Binding Path=SelectedItem, UpdateSourceTrigger=PropertyChanged}">
                         <DataGrid.RowValidationRules>
-                            <DataErrorValidationRule ValidationStep="UpdatedValue"/>
-                        </DataGrid.RowValidationRules>
+                            <DataErrorValidationRule ValidationStep="UpdatedValue"/>                              
+                        </DataGrid.RowValidationRules>                        
                         <DataGrid.Resources>
-                            <is:BindingProxy x:Key="proxy" Data="{Binding}" />
+                            <is:BindingProxy x:Key="proxy" Data="{Binding}" />                            
                         </DataGrid.Resources>
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding Path=Id}" IsReadOnly="True" Width="Auto"/>
                             <DataGridTextColumn Header="Фамилия" Binding="{Binding Path=Lastname, ValidatesOnDataErrors=True,
-                                UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding Data.IsFIOReadOnly, Source={StaticResource proxy}}"
-                                                Width="*"/>
+                                UpdateSourceTrigger=PropertyChanged}"
+                                                IsReadOnly="{Binding Data.IsFIOReadOnly, Source={StaticResource proxy}}" Width="*"/>
                             <DataGridTextColumn Header="Имя" Binding="{Binding Path=Name, ValidatesOnDataErrors=True,
                                 UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding Data.IsFIOReadOnly, Source={StaticResource proxy}}" 
                                                 Width="*"/>
