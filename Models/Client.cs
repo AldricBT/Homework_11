@@ -13,7 +13,7 @@ namespace Homework_11.Models
     /// </summary>
     /// 
     // По идее должен реализовывать ViewModel! или INotifyPropertyChanged
-    internal class Client : ICloneable, INotifyPropertyChanged, IEquatable<Client>
+    internal partial class Client : ICloneable, INotifyPropertyChanged, IEquatable<Client>
     {
         private int _id;
         private string _lastname;
