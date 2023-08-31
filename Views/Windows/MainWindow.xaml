@@ -10,7 +10,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="{Binding Path=MainWindowTitle}" 
-        Height="450" Width="850" MinHeight="200" MinWidth="850">    
+        Height="450" Width="900" MinHeight="200" MinWidth="900">    
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
@@ -64,10 +64,7 @@
 
                     <DataGrid ItemsSource="{Binding Path=Clients}" Width="600" HorizontalAlignment="Left" Margin="20"
                               AutoGenerateColumns="False" CanUserAddRows="True" SelectionMode="Single"
-                              SelectedItem="{Binding Path=SelectedItem, UpdateSourceTrigger=PropertyChanged}">
-                        <DataGrid.RowValidationRules>
-                            <DataErrorValidationRule ValidationStep="UpdatedValue"/>                              
-                        </DataGrid.RowValidationRules>                        
+                              SelectedItem="{Binding Path=SelectedItem, UpdateSourceTrigger=PropertyChanged}">                        
                         <DataGrid.Resources>
                             <is:BindingProxy x:Key="proxy" Data="{Binding}" />                            
                         </DataGrid.Resources>
@@ -99,6 +96,10 @@
                                 <i:InvokeCommandAction Command="{Binding RememberClientCommand}"/>
                             </i:EventTrigger>
 
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding GetEditCommand}"/>
+                            </i:EventTrigger>
+
                         </i:Interaction.Triggers>
                     </DataGrid>
 
@@ -107,6 +108,26 @@
                                 Command="{Binding Path=GoToAddPage}"/>
                         <Button Width="120" Height="30" Margin="20,0" Content="Удалить клиента" 
                                 Command="{Binding Path=RemoveClientCommand}"/>
+                        
+                        <!-- Информация об изменении клиента -->
+                        <StackPanel Margin="10">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Автор изменения: "/>
+                                <TextBlock Text="{Binding EditWho}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Тип изменения: "/>
+                                <TextBlock Text="{Binding EditType}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Измененные данные: "/>
+                                <TextBlock Text="{Binding EditData}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Дата изменения: "/>
+                                <TextBlock Text="{Binding EditTime}"/>
+                            </StackPanel>
+                        </StackPanel>
                     </StackPanel>
                     
                 </StackPanel>

@@ -49,6 +49,11 @@ namespace Homework_11.Models
             Clients.Where(c => c.Id == _changed.Id).First().EditWho = EnumOfWorkers.Менеджер.ToString();
             Clients.Where(c => c.Id == _changed.Id).First().EditType = "Изменение";
 
+            _publicClients.Where(c => c.Id == _changed.Id).First().EditData = editData;
+            _publicClients.Where(c => c.Id == _changed.Id).First().EditTime = DateTime.Now;
+            _publicClients.Where(c => c.Id == _changed.Id).First().EditWho = EnumOfWorkers.Менеджер.ToString();
+            _publicClients.Where(c => c.Id == _changed.Id).First().EditType = "Изменение";
+
             Save();
         }
 

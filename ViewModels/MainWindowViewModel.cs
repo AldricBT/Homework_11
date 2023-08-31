@@ -122,7 +122,6 @@ namespace Homework_11.ViewModels
         #endregion
 
         #region Add new client Properties
-
         #region Lastname
         private string _lastname = default!;
         public string Lastname
@@ -167,8 +166,48 @@ namespace Homework_11.ViewModels
             set => Set(ref _passport, value);
         }
         #endregion
+        #endregion
+
+        #region Selected client edit properties
+
+        #region EditWho
+        private string _editWho = default!;
+        public string EditWho
+        {
+            get => _editWho;
+            set => Set(ref _editWho, value);
+        }
+        #endregion
+
+        #region EditData
+        private string _editData = default!;
+        public string EditData
+        {
+            get => _editData;
+            set => Set(ref _editData, value);
+        }
+        #endregion
+
+        #region EditType
+        private string _editType = default!;
+        public string EditType
+        {
+            get => _editType;
+            set => Set(ref _editType, value);
+        }
+        #endregion
+
+        #region EditTime
+        private string _editTime = default!;
+        public string EditTime
+        {
+            get => _editTime;
+            set => Set(ref _editTime, value);
+        }
+        #endregion
 
         #endregion
+
 
         #endregion
 
@@ -209,8 +248,7 @@ namespace Homework_11.ViewModels
                     OnPropertyChanged(nameof(IsPassportReadOnly));
                     break;
             }
-            _clients = _worker.PublicClients;
-            OnPropertyChanged("Clients");
+            Clients = _worker.PublicClients;
         }
 
         private bool CanAuthorizationCommandExecute(object p) => _selectedPageIndex >= 0; //если команда должна быть доступна всегда, то просто возвращаем true
@@ -316,6 +354,12 @@ namespace Homework_11.ViewModels
                 return;
             }                
             _worker.ChangedClientData(_selectedItem, _rememberClient);
+
+            EditWho = _selectedItem.EditWho;
+            EditData = _selectedItem.EditData;
+            EditTime = _selectedItem.EditTime.ToString("dd.MM.yyyy HH:mm");
+            EditType = _selectedItem.EditType;
+            Clients = _worker.PublicClients;
         }
 
         private bool CanSaveChangesCommandExecute(object p) => true; //если команда должна быть доступна всегда, то просто возвращаем true
@@ -333,6 +377,23 @@ namespace Homework_11.ViewModels
         private bool CanRememberClientCommandExecute(object p) => _selectedPageIndex >= 0; //если команда должна быть доступна всегда, то просто возвращаем true
         #endregion 
 
+        #region GetEditCommand. Обновление информации об изменениях клиента при его выборе
+        public ICommand GetEditCommand { get; } //здесь живет сама команда (это по сути обычное свойство, чтобы его можно было вызвать из хамл)
+
+        private void OnGetEditCommandExecuted(object p) //логика команды
+        {
+            if (_selectedItem == null)
+                return;
+            EditWho = _selectedItem.EditWho;
+            EditData = _selectedItem.EditData;
+            EditTime = _selectedItem.EditTime.ToString("dd.MM.yyyy HH:mm");
+            EditType = _selectedItem.EditType;
+        }
+
+        private bool CanGetEditCommandExecute(object p) => _selectedPageIndex >= 0; //если команда должна быть доступна всегда, то просто возвращаем true
+        #endregion 
+        
+
         #endregion
 
         /// <summary>
@@ -341,7 +402,7 @@ namespace Homework_11.ViewModels
         public MainWindowViewModel()
         {
 
-            #region Commands
+            #region Commands 
             GoToAddPage = new LambdaCommand(OnGoToAddPageExecuted, CanGoToAddPageExecute);
             AuthorizationCommand = new LambdaCommand(OnAuthorizationCommandExecuted, CanAuthorizationCommandExecute);
             GoToAuthorizationPageCommand = new LambdaCommand(OnGoToAuthorizationPageCommandExecuted, CanGoToAuthorizationPageCommandExecute);
@@ -349,9 +410,9 @@ namespace Homework_11.ViewModels
             RememberClientCommand = new LambdaCommand(OnRememberClientCommandExecuted, CanRememberClientCommandExecute);
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
             RemoveClientCommand = new LambdaCommand(OnRemoveClientCommandExecuted, CanRemoveClientCommandExecute);
-            
+            GetEditCommand = new LambdaCommand(OnGetEditCommandExecuted, CanGetEditCommandExecute);
 
-            # endregion
+            #endregion
         }
     }
 }
