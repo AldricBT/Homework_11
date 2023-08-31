@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Homework_11.Models
 {
-    internal partial class Client : IDataErrorInfo
+    internal partial class Client : IDataErrorInfo, IEditableObject
     {
+        #region Реализация IDataErrorInfo
         public string Error
         {
             get
@@ -75,5 +76,50 @@ namespace Homework_11.Models
                 return "";
             }
         }
+        #endregion
+
+        #region Реализация IEditableObject
+        bool inEdit = false;
+        Client tempClient;
+
+        /// <summary>
+        /// При начале редактирования, запоминает изначальные данные
+        /// </summary>
+        public void BeginEdit()
+        {
+            if (inEdit)
+                return;
+
+            inEdit = true;
+            tempClient = new Client(this.Id,this.Lastname,this.Name,this.Patronymic,this.Phone,this.Passport);            
+        }
+
+        /// <summary>
+        /// При отмене редактирования все возвращает назад, как было
+        /// </summary>
+        public void CancelEdit()
+        {
+            if (!inEdit)
+                return;
+
+            inEdit = false;
+            this.Lastname = tempClient.Lastname;
+            this.Name = tempClient.Name;
+            this.Patronymic = tempClient.Patronymic;
+            this.Phone = tempClient.Phone;
+            this.Passport = tempClient.Passport;
+
+            tempClient = null!;
+        }
+
+        public void EndEdit()
+        {
+            if (!inEdit)
+                return;
+
+            inEdit = false;
+            tempClient = null!;
+        }
+        #endregion
     }
 }
