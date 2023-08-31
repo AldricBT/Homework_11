@@ -68,7 +68,7 @@ namespace Homework_11.ViewModels
         public ObservableCollection<Client> Clients
         {
             get => _clients;
-            set => Set(ref _clients, value);
+            set => Set(ref _clients, value);            
         }
         #endregion
 
@@ -305,8 +305,17 @@ namespace Homework_11.ViewModels
 
         private void OnSaveChangesCommandExecuted(object p) //логика команды
         {
-            if (!_selectedItem.Equals(_rememberClient))
-                _worker.ChangedClientData(_selectedItem, _rememberClient);
+            if (_selectedItem.Equals(_rememberClient))
+                return;
+            //валидность ввода. пустое поле недопустимо
+            if ((string.IsNullOrEmpty(_selectedItem.Lastname)) || (string.IsNullOrEmpty(_selectedItem.Name)) ||
+                (string.IsNullOrEmpty(_selectedItem.Patronymic)) || (string.IsNullOrEmpty(_selectedItem.Phone)) ||
+                (string.IsNullOrEmpty(_selectedItem.Passport)))
+            {
+                Clients[Clients.IndexOf(Clients.Where(c => c.Id == _rememberClient.Id).First())] = _rememberClient;                    
+                return;
+            }                
+            _worker.ChangedClientData(_selectedItem, _rememberClient);
         }
 
         private bool CanSaveChangesCommandExecute(object p) => true; //если команда должна быть доступна всегда, то просто возвращаем true

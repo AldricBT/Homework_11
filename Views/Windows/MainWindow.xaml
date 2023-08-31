@@ -6,7 +6,6 @@
         xmlns:vm="clr-namespace:Homework_11.ViewModels"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:local="clr-namespace:Homework_11" 
-        xmlns:dt="clr-namespace:Homework_11.Infrastructure.Validation"
         xmlns:is="clr-namespace:Homework_11.Infrastructure.Convertors" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
