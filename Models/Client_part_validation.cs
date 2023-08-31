@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Homework_11.Models
 {
-    internal partial class Client : IDataErrorInfo, IEditableObject
+    public partial class Client : IDataErrorInfo, IEditableObject
     {
         #region Реализация IDataErrorInfo
         public string Error
