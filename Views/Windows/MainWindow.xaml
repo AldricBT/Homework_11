@@ -73,21 +73,16 @@
                         </DataGrid.Resources>
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding Path=Id}" IsReadOnly="True" Width="Auto"/>
-                            <DataGridTextColumn Header="Фамилия" Binding="{Binding Path=Lastname, ValidatesOnDataErrors=True,
-                                UpdateSourceTrigger=PropertyChanged}"
+                            <DataGridTextColumn Header="Фамилия" Binding="{Binding Path=Lastname, UpdateSourceTrigger=PropertyChanged}"
                                                 IsReadOnly="{Binding Data.IsFIOReadOnly, Source={StaticResource proxy}}" Width="*"/>
-                            <DataGridTextColumn Header="Имя" Binding="{Binding Path=Name, ValidatesOnDataErrors=True,
-                                UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding Data.IsFIOReadOnly, Source={StaticResource proxy}}" 
-                                                Width="*"/>
-                            <DataGridTextColumn Header="Отчество" Binding="{Binding Path=Patronymic, ValidatesOnDataErrors=True,
-                                UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding Data.IsFIOReadOnly, Source={StaticResource proxy}}" 
-                                                Width="*"/>
-                            <DataGridTextColumn Header="Телефон" Binding="{Binding Path=Phone, ValidatesOnDataErrors=True,
-                                UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding Data.IsPhoneReadOnly, Source={StaticResource proxy}}"
-                                                Width="Auto"/>
-                            <DataGridTextColumn Header="Паспорт" Binding="{Binding Path=Passport, ValidatesOnDataErrors=True,
-                                UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding Data.IsFIOReadOnly, Source={StaticResource proxy}}" 
-                                                Width="Auto"/>
+                            <DataGridTextColumn Header="Имя" Binding="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"
+                                                IsReadOnly="{Binding Data.IsFIOReadOnly, Source={StaticResource proxy}}" Width="*"/>
+                            <DataGridTextColumn Header="Отчество" Binding="{Binding Path=Patronymic, UpdateSourceTrigger=PropertyChanged}" 
+                                                IsReadOnly="{Binding Data.IsFIOReadOnly, Source={StaticResource proxy}}" Width="*"/>
+                            <DataGridTextColumn Header="Телефон" Binding="{Binding Path=Phone, UpdateSourceTrigger=PropertyChanged}" 
+                                                IsReadOnly="{Binding Data.IsPhoneReadOnly, Source={StaticResource proxy}}" Width="Auto"/>
+                            <DataGridTextColumn Header="Паспорт" Binding="{Binding Path=Passport, UpdateSourceTrigger=PropertyChanged}" 
+                                                IsReadOnly="{Binding Data.IsFIOReadOnly, Source={StaticResource proxy}}" Width="Auto"/>
 
                             <!--<DataGridTextColumn Header="Время последнего изменения" Binding="{Binding Path=EditTime}" IsReadOnly="True" Width="Auto"/>-->
                             <!--<DataGridTextColumn Header="Автор изменения" Binding="{Binding Path=EditWho}" IsReadOnly="True" Width="Auto"/>-->
